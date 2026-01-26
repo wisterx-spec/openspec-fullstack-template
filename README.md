@@ -6,7 +6,7 @@ AI 辅助全栈开发的工程化模板，解决"前后端接口不一致"、"�
 
 ```bash
 # 1. 克隆模板
-git clone https://github.com/你的用户名/openspec-fullstack-template.git
+git clone https://github.com/wisterx-spec/openspec-fullstack-template.git
 cd openspec-fullstack-template
 
 # 2. 复制到你的项目
