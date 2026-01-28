@@ -1,0 +1,389 @@
+{{!--
+  Infrastructure Template: Define foundational architecture components
+  Used in project initialization phase (Phase 0)
+--}}
+# Role
+You are the Infrastructure Architect.
+
+# Goal
+Define the foundational infrastructure components for: {{ project_name }}
+
+# Context
+This template is used during project initialization (Phase 0) to establish:
+- Logging standards
+- Error handling patterns
+- Request/Response formats
+- Console output formatting
+- Error code system
+
+# Output Format (Markdown)
+
+---
+
+# Infrastructure Specification: {{ project_name }}
+
+## 1. Logging System
+
+### 1.1 Log Levels
+| Level | Usage | Example |
+|-------|-------|---------|
+| DEBUG | Development debugging | Function entry/exit, variable values |
+| INFO | Normal operations | Request received, task completed |
+| WARN | Recoverable issues | Retry attempts, deprecated API usage |
+| ERROR | Application errors | Failed operations, caught exceptions |
+| CRITICAL | System failures | Database down, service unavailable |
+
+### 1.2 Structured Logging Format
+```json
+{
+  "timestamp": "2024-01-28T10:30:00.000Z",
+  "level": "INFO",
+  "service": "{{ service_name }}",
+  "trace_id": "uuid-v4",
+  "message": "User login successful",
+  "context": {
+    "user_id": 12345,
+    "ip": "192.168.1.1",
+    "duration_ms": 150
+  }
+}
+```
+
+### 1.3 Required Fields
+- **timestamp**: ISO 8601 format
+- **level**: Log level (DEBUG/INFO/WARN/ERROR/CRITICAL)
+- **service**: Service/module name
+- **trace_id**: Request tracing ID (for distributed tracing)
+- **message**: Human-readable message
+- **context**: Additional structured data (optional)
+
+### 1.4 Implementation Guidelines
+- **Backend**: Use structured logging library (e.g., `winston`, `pino`, `structlog`)
+- **Frontend**: Use console wrapper with structured format
+- **Sensitive Data**: Never log passwords, tokens, or PII
+- **Performance**: Log slow operations (>1s) with duration metrics
+
+---
+
+## 2. Error Handling System
+
+### 2.1 Error Code Structure
+```
+[Category][SubCategory][Sequence]
+Example: 1001, 2003, 4005
+```
+
+| Range | Category | Description |
+|-------|----------|-------------|
+| 1xxx | Client Errors | Invalid input, validation failures |
+| 2xxx | Business Logic Errors | Business rule violations |
+| 3xxx | External Service Errors | Third-party API failures |
+| 4xxx | System Errors | Database, network, infrastructure |
+| 5xxx | Unknown Errors | Unexpected exceptions |
+
+### 2.2 Standard Error Codes
+| Code | Message | Description |
+|------|---------|-------------|
+| 1000 | Invalid Parameter | Missing or malformed request parameter |
+| 1001 | Validation Failed | Data validation error |
+| 1002 | Unauthorized | Authentication required |
+| 1003 | Forbidden | Insufficient permissions |
+| 2000 | Resource Not Found | Requested resource doesn't exist |
+| 2001 | Resource Already Exists | Duplicate resource creation |
+| 2002 | Business Rule Violation | Operation violates business logic |
+| 3000 | External Service Unavailable | Third-party service timeout/error |
+| 4000 | Database Error | Database connection/query failure |
+| 4001 | Network Error | Network connectivity issue |
+| 5000 | Internal Server Error | Unexpected system error |
+
+### 2.3 Error Response Format
+```json
+{
+  "code": 1000,
+  "message": "Invalid Parameter",
+  "data": null,
+  "error_details": {
+    "field": "email",
+    "reason": "Invalid email format",
+    "trace_id": "uuid-v4"
+  }
+}
+```
+
+### 2.4 Error Handling Guidelines
+- **Catch Specific Exceptions**: Avoid generic `catch (Exception e)`
+- **Log Before Throwing**: Always log errors with context
+- **User-Friendly Messages**: Don't expose internal details to users
+- **Retry Logic**: Implement exponential backoff for transient errors
+- **Circuit Breaker**: Prevent cascading failures for external services
+
+---
+
+## 3. Request/Response Format
+
+### 3.1 Standard Response Structure (StandardResp)
+```typescript
+interface StandardResp<T> {
+  code: number;        // 0 for success, error code otherwise
+  message: string;     // Human-readable message
+  data: T | null;      // Response payload (null on error)
+}
+```
+
+### 3.2 Success Response Example
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "id": 123,
+    "name": "Example",
+    "created_at": "2024-01-28T10:30:00Z"
+  }
+}
+```
+
+### 3.3 Error Response Example
+```json
+{
+  "code": 1000,
+  "message": "Invalid Parameter",
+  "data": null
+}
+```
+
+### 3.4 Pagination Response
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "items": [...],
+    "pagination": {
+      "page": 1,
+      "page_size": 20,
+      "total_count": 100,
+      "total_pages": 5
+    }
+  }
+}
+```
+
+### 3.5 Request Headers (Required)
+- **Content-Type**: `application/json`
+- **X-Request-ID**: Unique request identifier (UUID v4)
+- **Authorization**: `Bearer <token>` (for authenticated endpoints)
+
+---
+
+## 4. Console Output Formatting
+
+### 4.1 Development Mode
+- **Colorized Output**: Use ANSI colors for different log levels
+  - DEBUG: Gray
+  - INFO: Blue
+  - WARN: Yellow
+  - ERROR: Red
+  - CRITICAL: Red + Bold
+
+### 4.2 Production Mode
+- **JSON Format**: Structured JSON for log aggregation
+- **No Colors**: Plain text for log parsers
+- **Minimal Verbosity**: INFO level and above only
+
+### 4.3 Request Logging Format
+```
+[2024-01-28 10:30:00] INFO [trace_id=abc123] GET /api/users?page=1 - 200 OK (150ms)
+```
+
+### 4.4 Error Logging Format
+```
+[2024-01-28 10:30:00] ERROR [trace_id=abc123] POST /api/orders - 500 Internal Server Error
+  Error: Database connection failed
+  Stack: ...
+  Context: {user_id: 123, order_id: 456}
+```
+
+---
+
+## 5. Middleware Architecture
+
+### 5.1 Request Processing Pipeline
+```
+Request → [Auth] → [Validation] → [Logging] → [Handler] → [Response] → [Error Handler]
+```
+
+### 5.2 Standard Middleware Components
+
+#### 5.2.1 Authentication Middleware
+- Verify JWT token
+- Extract user context
+- Attach user info to request
+
+#### 5.2.2 Validation Middleware
+- Validate request schema
+- Sanitize input data
+- Return 400 on validation failure
+
+#### 5.2.3 Logging Middleware
+- Log request start (method, path, headers)
+- Log response (status, duration)
+- Generate trace_id for request tracking
+
+#### 5.2.4 Error Handler Middleware
+- Catch all unhandled exceptions
+- Convert to StandardResp format
+- Log error with stack trace
+- Return appropriate HTTP status code
+
+#### 5.2.5 CORS Middleware
+- Configure allowed origins
+- Handle preflight requests
+- Set CORS headers
+
+### 5.3 Middleware Execution Order (Critical)
+1. CORS (first)
+2. Request ID generation
+3. Logging (request start)
+4. Authentication
+5. Validation
+6. Business logic handler
+7. Logging (response)
+8. Error handler (last)
+
+---
+
+## 6. Development Mode Support
+
+### 6.1 Independent Development Modes
+
+#### Mode 1: Frontend-Only Development
+- **Mock Backend**: Use static JSON responses from `spec.md`
+- **Mock Server**: Run local mock server (e.g., MSW, json-server)
+- **No Backend Dependency**: Frontend can develop independently
+
+#### Mode 2: Backend-Only Development
+- **API Testing**: Use Postman/curl for testing
+- **Mock Frontend**: Not required
+- **Focus**: API implementation and database logic
+
+#### Mode 3: Middleware-Only Development
+- **Isolated Testing**: Test middleware in isolation
+- **Mock Handlers**: Use simple pass-through handlers
+- **Focus**: Request/response transformation, auth, validation
+
+#### Mode 4: Fullstack Development
+- **Integrated**: Frontend + Backend + Middleware
+- **E2E Testing**: Full integration tests
+- **Contract Verification**: Ensure frontend/backend alignment
+
+### 6.2 Configuration per Mode
+```yaml
+# config/development.yaml
+mode: "frontend-only"  # or "backend-only", "middleware-only", "fullstack"
+
+frontend_only:
+  mock_server_port: 3001
+  mock_data_source: "spec.md"
+
+backend_only:
+  enable_cors: true
+  allow_origins: ["*"]
+
+middleware_only:
+  test_mode: true
+  skip_auth: true
+
+fullstack:
+  frontend_port: 3000
+  backend_port: 8000
+```
+
+---
+
+## 7. Implementation Checklist
+
+### Phase 0: Infrastructure Setup
+- [ ] **Logging System**
+  - [ ] Install logging library
+  - [ ] Configure log levels and output format
+  - [ ] Implement structured logging wrapper
+  - [ ] Add trace_id generation
+
+- [ ] **Error Handling**
+  - [ ] Define error code constants
+  - [ ] Implement custom exception classes
+  - [ ] Create error response formatter
+  - [ ] Add global error handler
+
+- [ ] **Request/Response**
+  - [ ] Define StandardResp type/interface
+  - [ ] Create response wrapper utility
+  - [ ] Implement pagination helper
+  - [ ] Add request validation schema
+
+- [ ] **Middleware**
+  - [ ] Implement authentication middleware
+  - [ ] Implement validation middleware
+  - [ ] Implement logging middleware
+  - [ ] Implement error handler middleware
+  - [ ] Configure middleware execution order
+
+- [ ] **Console Output**
+  - [ ] Configure colorized output for dev mode
+  - [ ] Configure JSON output for production
+  - [ ] Implement request/response logging format
+
+- [ ] **Development Modes**
+  - [ ] Add mode selection in config
+  - [ ] Implement frontend-only mock server
+  - [ ] Implement backend-only CORS config
+  - [ ] Implement middleware-only test mode
+
+---
+
+## 8. Validation Criteria
+
+### 8.1 Logging Validation
+- [ ] All API requests are logged with trace_id
+- [ ] Slow operations (>1s) are logged with duration
+- [ ] Errors include stack trace and context
+- [ ] No sensitive data in logs
+
+### 8.2 Error Handling Validation
+- [ ] All errors return StandardResp format
+- [ ] Error codes are consistent and documented
+- [ ] User-friendly error messages
+- [ ] Errors are logged before returning
+
+### 8.3 Request/Response Validation
+- [ ] All responses follow StandardResp structure
+- [ ] Pagination includes total_count
+- [ ] Request headers include X-Request-ID
+- [ ] Response time is logged
+
+### 8.4 Middleware Validation
+- [ ] Middleware execution order is correct
+- [ ] Authentication works for protected routes
+- [ ] Validation rejects invalid requests
+- [ ] Error handler catches all exceptions
+
+---
+
+## 9. Integration with 13-Step Workflow
+
+This infrastructure specification is used in:
+- **Phase 0 (Step 1)**: Initial setup during tech stack analysis
+- **Phase 1 (Step 4)**: Referenced in `spec.md` for error codes
+- **Phase 3 (Step 6)**: Used in frontend mock development
+- **Phase 4 (Step 8)**: Implemented in backend skeleton
+- **Phase 6 (Step 10)**: Fully integrated in service implementation
+
+**Critical**: This infrastructure does NOT modify the 13-step workflow. It provides foundational components used throughout all phases.
+
+---
+
+# Notes
+- This specification should be created once during project initialization
+- All subsequent features should follow these infrastructure patterns
+- Update this document when adding new error codes or middleware

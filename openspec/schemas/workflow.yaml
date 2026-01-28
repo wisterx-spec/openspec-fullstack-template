@@ -2,6 +2,18 @@ name: workflow
 description: "13-Step Contract-First Development Workflow"
 
 artifacts:
+  # --- Phase 0: Infrastructure (Optional, for new projects) ---
+  - name: infrastructure
+    type: markdown
+    description: "Phase 0: Infrastructure Specification (Optional)"
+    template: "infrastructure.hbs"
+    optional: true
+    rules:
+      - "Define logging system, error handling, request/response format."
+      - "Define middleware architecture and execution order."
+      - "Define development modes (fullstack/frontend-only/backend-only/middleware-only)."
+      - "This is a one-time setup for new projects."
+
   # --- Phase 0-1: Definition ---
   - name: proposal
     type: markdown
@@ -19,6 +31,8 @@ artifacts:
       - "Must include API endpoints with JSON request/response examples."
       - "Must follow 'StandardResp' structure for responses."
       - "Must define database schema with indexes if applicable."
+      - "Must reference error codes from infrastructure.md (if exists)."
+      - "Must specify logging requirements for critical operations."
 
   # --- Phase 2: Design Split (Step 5) ---
   - name: design
@@ -26,6 +40,12 @@ artifacts:
     description: "Phase 2: Step 5 - FE/BE Split Architecture"
     dependencies: ["spec"]
     template: "design.hbs"
+    rules:
+      - "Must specify development mode (fullstack/frontend-only/backend-only/middleware-only)."
+      - "Must define frontend architecture (unless backend-only mode)."
+      - "Must define backend architecture (unless frontend-only mode)."
+      - "Must define middleware requirements."
+      - "Must reference infrastructure.md for logging and error handling patterns."
 
   # --- Phase 3-8: Task Breakdown ---
   - name: tasks
@@ -33,3 +53,8 @@ artifacts:
     description: "Phase 3-8: Implementation & Verification Steps"
     dependencies: ["design", "spec"]
     template: "tasks.hbs"
+    rules:
+      - "Must include infrastructure setup tasks in Phase 0 (for new projects)."
+      - "Must adapt tasks based on development mode."
+      - "Must include logging and error handling requirements in implementation tasks."
+      - "Must reference infrastructure.md for standards compliance."

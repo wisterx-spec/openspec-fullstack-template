@@ -23,6 +23,15 @@ Please generate the response following this EXACT structure:
 ## Phase 0: Initialization (Step 1)
 - [x] **Task 0.1**: [Step 1] Analyze Tech Stack & Map Structure
   - Status: Completed via Context Injection.
+- [ ] **Task 0.2**: [Step 1] Setup Infrastructure Components
+  - Action: Review `infrastructure.md` for foundational patterns
+  - Action: Install logging library (e.g., winston, pino, structlog)
+  - Action: Configure structured logging with trace_id support
+  - Action: Define error code constants (refer to infrastructure.md)
+  - Action: Implement StandardResp wrapper utility
+  - Action: Setup middleware pipeline (auth, validation, logging, error handler)
+  - Action: Configure development mode (fullstack/frontend-only/backend-only/middleware-only)
+  - Note: This is a one-time setup for new projects. Skip if infrastructure already exists.
 
 ## Phase 1: Definition (Steps 2-4)
 - [x] **Task 1.1**: [Step 2] Draft Proposal (Completed in `proposal.md`)
@@ -34,31 +43,94 @@ Please generate the response following this EXACT structure:
 - [x] **Task 2.2**: [Step 5] Backend Controller Interface (Completed in `design.md`)
 
 ## Phase 3: Frontend Mock Dev (Steps 6-7)
+{{#unless (eq dev_mode "backend-only")}}
 - [ ] **Task 3.1**: [Step 6] Implement Frontend with Mock Data
   - Action: Create Mock Data conforming to `StandardResp` format.
   - Action: Implement UI Components (List specific components mentioned in Design).
+  {{#if (eq dev_mode "frontend-only")}}
+  - Action: Setup mock server (e.g., MSW, json-server) using JSON from `spec.md`
+  - Action: Configure mock server port and routes
+  {{/if}}
+  - Action: Implement API client with request interceptors (add X-Request-ID)
+  - Action: Implement error handling for StandardResp format
 - [ ] **Task 3.2**: [Step 7] Verify Frontend Features
   - Action: Verify data rendering and interaction logic locally.
+  - Action: Test loading/error/empty states
+  - Action: Verify mock data matches `spec.md` examples
+{{else}}
+- [x] **Task 3.1**: [Step 6-7] Frontend Mock Dev
+  - Status: Skipped (backend-only mode)
+{{/unless}}
 
 ## Phase 4: Backend Skeleton (Step 8)
+{{#unless (eq dev_mode "frontend-only")}}
 - [ ] **Task 4.1**: [Step 8] Implement Controller Skeleton
   - Target: Create/Update Routers (List specific files).
   - Constraint: Return **Static JSON** from Contract. **NO DB CONNECTION**.
+  - Action: Implement middleware integration (auth, validation, logging)
+  - Action: Add X-Request-ID header handling
+  - Action: Return StandardResp format with mock data from `spec.md`
+  - Action: Implement error responses with error codes from `infrastructure.md`
+{{else}}
+- [x] **Task 4.1**: [Step 8] Backend Skeleton
+  - Status: Skipped (frontend-only mode)
+{{/unless}}
 
 ## Phase 5: Contract Testing (Step 9)
+{{#if (eq dev_mode "fullstack")}}
 - [ ] **Task 5.1**: [Step 9] Run E2E Tests (Mock Mode)
   - Action: Write tests to verify the Skeleton API.
+  - Action: Verify response format matches `spec.md`
+  - Action: Test error responses and error codes
+  - Action: Verify trace_id in responses
+{{else}}
+  {{#if (eq dev_mode "backend-only")}}
+- [ ] **Task 5.1**: [Step 9] Run API Tests
+  - Action: Test endpoints with Postman/curl/automated tests
+  - Action: Verify response format matches `spec.md`
+  - Action: Test error responses and error codes
+  {{else}}
+    {{#if (eq dev_mode "frontend-only")}}
+- [ ] **Task 5.1**: [Step 9] Run Component Tests
+  - Action: Test UI components with mock data
+  - Action: Verify data rendering and user interactions
+  - Action: Test error handling and loading states
+    {{else}}
+- [ ] **Task 5.1**: [Step 9] Run Tests
+  - Action: Run appropriate tests for selected development mode
+    {{/if}}
+  {{/if}}
+{{/if}}
 
 ## Phase 6: Implementation (Step 10)
+{{#unless (eq dev_mode "frontend-only")}}
 - [ ] **Task 6.1**: [Step 10] Database Models & Migrations
   - Action: Create migration for tables: (List specific table names from Spec).
   - Action: Update ORM models.
   - Action: **Generate Seed Data** from `spec.md` JSON examples for dev/test database.
+  - Action: Verify indexes are created as specified in `spec.md`
 - [ ] **Task 6.2**: [Step 10] Implement Service Logic
   - Action: Implement business logic in (List specific Service classes).
   - Action: Replace Mock return with Real DB queries.
-  - Constraint: **Must include Structured Logging** (Key fields: TaskID, Duration, RetryCount).
-  - Constraint: Critical errors must use Alert-level logging for monitoring.
+  - Constraint: **Must include Structured Logging** (Key fields: trace_id, user_id, duration_ms).
+  - Constraint: Log slow operations (>1s) with duration metrics.
+  - Constraint: Log all errors with full context (stack trace, request params).
+  - Constraint: Use error codes from `infrastructure.md`.
+  - Constraint: Return StandardResp format for all responses.
+  - Constraint: Include error_details with trace_id in error responses.
+  - Action: Implement request validation using middleware.
+  - Action: Add authentication checks where required.
+{{else}}
+- [x] **Task 6.1-6.2**: [Step 10] Backend Implementation
+  - Status: Skipped (frontend-only mode)
+{{/unless}}
+{{#unless (eq dev_mode "backend-only")}}
+- [ ] **Task 6.3**: [Step 10] Connect Frontend to Real Backend
+  - Action: Update API client to use real backend URL
+  - Action: Remove mock server/data
+  - Action: Test frontend with real API
+  - Action: Verify error handling with real error responses
+{{/unless}}
 
 ## Phase 7: Real Verification (Steps 11-12)
 - [ ] **Task 7.1**: [Step 11] Run Tests (Real DB)

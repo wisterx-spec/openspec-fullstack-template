@@ -138,7 +138,7 @@ All tasks complete! Ready to archive this change.
 What would you like to do?
 ```
 
-**Guardrails**
+## Guardrails
 - Keep going through tasks until done or blocked
 - Always read context files before starting (from the apply instructions output)
 - If task is ambiguous, pause and ask before implementing

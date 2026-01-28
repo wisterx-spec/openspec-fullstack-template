@@ -8,10 +8,15 @@ project:
 # Default workflow
 default_schema: workflow
 
+# Development mode (affects design and tasks generation)
+# Options: fullstack, frontend-only, backend-only, middleware-only
+dev_mode: fullstack
+
 # Global context files
 global_context:
   - "context/project_summary.md"
   - "context/tech_stack.md"
+  - "context/infrastructure.md"   # Infrastructure specification (optional, for new projects)
 
 # Template engine
 template_engine: handlebars
@@ -22,6 +27,7 @@ templates:
   contract: "templates/contract.hbs"
   design: "templates/design.hbs"
   tasks: "templates/tasks.hbs"
+  infrastructure: "templates/infrastructure.hbs"  # Infrastructure template (optional)
 
 # File naming conventions (no numeric prefixes)
 naming:
@@ -29,3 +35,4 @@ naming:
   contract: "spec.md"
   design: "design.md"
   tasks: "tasks.md"
+  infrastructure: "infrastructure.md"

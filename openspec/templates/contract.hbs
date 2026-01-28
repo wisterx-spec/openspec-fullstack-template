@@ -43,11 +43,30 @@ Generate a `spec.md` file with the following structure:
 **Response** (Error):
 ```json
 {
-  "code": 400,
-  "message": "Invalid parameter",
-  "data": null
+  "code": 1000,
+  "message": "Invalid Parameter",
+  "data": null,
+  "error_details": {
+    "field": "xxx",
+    "reason": "xxx",
+    "trace_id": "uuid-v4"
+  }
 }
 ```
+
+**Error Codes** (refer to `infrastructure.md` for complete list):
+| Code | Message | When to Use |
+|------|---------|-------------|
+| 1000 | Invalid Parameter | Missing or malformed request parameter |
+| 2000 | Resource Not Found | Requested resource doesn't exist |
+| 4000 | Database Error | Database operation failure |
+| 5000 | Internal Server Error | Unexpected system error |
+
+**Logging Requirements**:
+- Log all requests with `trace_id` (from X-Request-ID header)
+- Log slow operations (>1s) with duration metrics
+- Log errors with full context (user_id, request params, stack trace)
+- Use structured logging format (refer to `infrastructure.md`)
 
 ---
 
@@ -76,4 +95,8 @@ Generate a `spec.md` file with the following structure:
 - [ ] All endpoints have JSON request/response examples
 - [ ] All responses follow StandardResp structure
 - [ ] Database tables define necessary indexes
-- [ ] Error codes are documented
+- [ ] Error codes are documented and follow infrastructure.md standards
+- [ ] Logging requirements are specified for critical operations
+- [ ] Request headers include X-Request-ID for tracing
+- [ ] Pagination endpoints return total_count
+- [ ] Error responses include error_details with trace_id
