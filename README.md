@@ -1,5 +1,7 @@
 # OpenSpec Fullstack Template
 
+[🇨🇳 中文文档](README_CN.md) | [📖 使用示例](USAGE_EXAMPLES_CN.md) | [📋 优化总结](OPTIMIZATION_SUMMARY_CN.md)
+
 > 13-Step Contract-First Development Workflow template for fullstack projects. Solves frontend-backend API inconsistency and high integration costs through Spec First, Mock Before Real principles.
 
 ## ✨ Features
