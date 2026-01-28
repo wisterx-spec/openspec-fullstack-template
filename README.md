@@ -1,222 +1,223 @@
 # OpenSpec Fullstack Template
 
-> 13 步契约优先开发工作流模板，适用于全栈项目。通过 Spec First、Mock Before Real 的原则，解决前后端接口不一致、联调成本高的问题。
+> 13-Step Contract-First Development Workflow template for fullstack projects. Solves frontend-backend API inconsistency and high integration costs through Spec First, Mock Before Real principles.
 
-## ✨ 特性
+## ✨ Features
 
-- 🎯 **契约优先**：先写 Spec，再写实现，确保前后端一致
-- 🚀 **Mock 先行**：前端先基于 Mock 开发，后端后实现，并行开发
-- ✅ **自动验证**：每个阶段自动验证，确保实现符合契约
-- 📋 **内置规范**：内置开发规范检查，避免常见问题
-- 🔄 **完整工作流**：从提案到归档的 13 步完整流程
-- 🏗️ **基础架构模板**：内置日志、错误处理、统一响应格式等基础设施规范
-- 🔀 **独立开发模式**：支持前端、后端、中间件独立开发
-- 📝 **错误码系统**：标准化的错误码定义（1xxx-5xxx）
-- 🔍 **结构化日志**：支持 trace_id 的结构化日志系统
+- 🎯 **Contract First**: Write Spec before implementation, ensuring frontend-backend consistency
+- 🚀 **Mock First**: Frontend develops with mock data while backend implements later, enabling parallel development
+- ✅ **Auto Verification**: Automatic validation at each phase ensures implementation matches contract
+- 📋 **Built-in Standards**: Built-in development standard checks to avoid common issues
+- 🔄 **Complete Workflow**: 13-step process from proposal to archive
+- 🏗️ **Infrastructure Templates**: Built-in logging, error handling, and unified response format specifications
+- 🔀 **Independent Dev Modes**: Support for frontend, backend, and middleware independent development
+- 📝 **Error Code System**: Standardized error code definitions (1xxx-5xxx)
+- 🔍 **Structured Logging**: Structured logging system with trace_id support
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 克隆模板
+### 1. Clone Template
 
 ```bash
-git clone https://github.com/wisterx-spec/openspec-fullstack-template.git
+git clone https://github.com/anthropics/openspec-fullstack-template.git
 cd openspec-fullstack-template
 ```
 
-### 2. 复制到你的项目
+### 2. Copy to Your Project
 
 ```bash
-# 复制 OpenSpec 配置
+# Copy OpenSpec configuration
 cp -r openspec-fullstack-template/openspec/ your-project/openspec/
 
-# 复制 Cursor Skills（可选，放到 .cursor/skills/）
+# Copy Cursor Skills (optional, place in .cursor/skills/)
 cp -r openspec-fullstack-template/skills/ your-project/.cursor/skills/
 ```
 
-### 3. 初始化项目上下文
+### 3. Initialize Project Context
 
 ```bash
 cd your-project/openspec/context/
 
-# 重命名模板文件
+# Rename template files
 mv project_summary.template.md project_summary.md
 mv tech_stack.template.md tech_stack.md
 
-# 编辑填写项目信息
+# Edit and fill in project information
 ```
 
-### 4. 更新配置
+### 4. Update Configuration
 
-编辑 `openspec/config.yaml`，替换 `{{ PROJECT_NAME }}` 为你的项目名。
+Edit `openspec/config.yaml`, replace `{{ PROJECT_NAME }}` with your project name.
 
-**可选：配置开发模式**
+**Optional: Configure Development Mode**
 
 ```yaml
-# 开发模式选择（影响设计和任务生成）
-dev_mode: fullstack  # 可选: fullstack, frontend-only, backend-only, middleware-only
+# Development mode selection (affects design and task generation)
+dev_mode: fullstack  # Options: fullstack, frontend-only, backend-only, middleware-only
 ```
 
-- **fullstack**（默认）：完整的前后端 + 中间件开发
-- **frontend-only**：仅前端开发，使用 Mock 后端
-- **backend-only**：仅后端 API 开发
-- **middleware-only**：仅中间件/基础设施开发
+- **fullstack** (default): Complete frontend + backend + middleware development
+- **frontend-only**: Frontend only, using mock backend
+- **backend-only**: Backend API development only
+- **middleware-only**: Middleware/infrastructure development only
 
-### 5. 可选：生成基础架构规范
+### 5. Optional: Generate Infrastructure Spec
 
-对于新项目，可以先生成基础架构规范：
+For new projects, generate infrastructure spec first:
 
 ```bash
-# 在 Cursor 中使用
+# In Cursor
 /opsx:new infrastructure
 
-# 这将生成 infrastructure.md，包含：
-# - 日志系统规范
-# - 错误处理和错误码定义
-# - 请求/响应格式标准
-# - 中间件架构模式
-# - 控制台输出格式
+# This generates infrastructure.md containing:
+# - Logging system specification
+# - Error handling and error code definitions
+# - Request/response format standards
+# - Middleware architecture patterns
+# - Console output formats
 ```
 
-### 6. 开始使用
+### 6. Start Using
 
-在 Cursor 中使用以下命令：
+Use these commands in Cursor:
 
 ```bash
-# 新手引导
+# Onboarding guide
 /opsx:onboard
 
-# 创建新变更
-/opsx:new <name>       # 逐步创建 artifacts
-/opsx:ff <name>        # 快速生成所有 artifacts
+# Create new change
+/opsx:new <name>       # Step-by-step artifact creation
+/opsx:ff <name>        # Fast-forward generate all artifacts
 
-# 实现和验证
-/opsx:apply <name>     # 实现任务
-/opsx:check-standards  # 检查开发规范
-/opsx:verify <name>    # 验证实现
+# Implementation and verification
+/opsx:apply <name>     # Implement tasks
+/opsx:check-standards  # Check development standards
+/opsx:verify <name>    # Verify implementation
 
-# 归档
-/opsx:archive <name>   # 归档完成的变更
+# Archive
+/opsx:archive <name>   # Archive completed change
 ```
 
-## 📁 目录结构
+## 📁 Directory Structure
 
 ```
 openspec-fullstack-template/
-├── openspec/                      # OpenSpec 配置
-│   ├── config.yaml               # 入口配置（支持 dev_mode）
+├── openspec/                      # OpenSpec configuration
+│   ├── config.yaml               # Entry configuration (supports dev_mode)
 │   ├── schemas/
-│   │   └── workflow.yaml         # 13 步工作流定义
-│   ├── templates/                # Handlebars 模板
-│   │   ├── infrastructure.hbs    # 基础架构规范模板（新增）
-│   │   ├── proposal.hbs          # Phase 0-1 提案模板
-│   │   ├── contract.hbs          # Phase 1 Spec 模板（增强）
-│   │   ├── design.hbs            # Phase 2 设计模板（增强）
-│   │   └── tasks.hbs             # Phase 3-8 任务模板（增强）
-│   └── context/                  # 项目上下文
+│   │   └── workflow/              # 13-step workflow schema
+│   │       ├── schema.yaml       # Workflow definition
+│   │       └── templates/        # Artifact templates
+│   │           ├── infrastructure.md
+│   │           ├── proposal.md
+│   │           ├── spec.md
+│   │           ├── design.md
+│   │           └── tasks.md
+│   └── context/                  # Project context
 │       ├── project_summary.template.md
 │       └── tech_stack.template.md
 │
 ├── skills/                        # Cursor Skills
-│   ├── openspec-new-change/      # 创建新变更
-│   ├── openspec-continue-change/ # 继续创建 artifacts
-│   ├── openspec-ff-change/       # 快速生成 artifacts
-│   ├── openspec-apply-change/    # 实现任务
-│   ├── openspec-check-standards/ # 检查开发规范
-│   ├── openspec-verify-change/   # 验证实现
-│   ├── openspec-archive-change/  # 归档变更
-│   ├── openspec-bulk-archive-change/ # 批量归档
-│   ├── openspec-explore/         # 探索模式
-│   ├── openspec-onboard/         # 新手引导
-│   ├── openspec-ralph-loop/      # Ralph Loop 自我优化（新增）
-│   └── openspec-sync-specs/      # 同步 specs
+│   ├── openspec-new-change/      # Create new change
+│   ├── openspec-continue-change/ # Continue creating artifacts
+│   ├── openspec-ff-change/       # Fast-forward artifacts
+│   ├── openspec-apply-change/    # Implement tasks
+│   ├── openspec-check-standards/ # Check development standards
+│   ├── openspec-verify-change/   # Verify implementation
+│   ├── openspec-archive-change/  # Archive change
+│   ├── openspec-bulk-archive-change/ # Bulk archive
+│   ├── openspec-explore/         # Explore mode
+│   ├── openspec-onboard/         # Onboarding guide
+│   └── openspec-sync-specs/      # Sync specs
 │
-├── init.sh                       # 初始化脚本（可选）
-└── README.md                     # 本文档
+├── init.sh                       # Initialization script (optional)
+├── validate.sh                   # Validation script (15 checks)
+└── README.md                     # This document
 ```
 
-## 🔄 13 步工作流
+## 🔄 13-Step Workflow
 
-| Phase | Steps | 描述 | 产出物 |
-|-------|-------|------|--------|
-| **Phase 0** | Step 1 | 技术栈分析 | 技术栈文档 |
-| **Phase 1** | Steps 2-4 | 提案 → 验证 → Spec（契约） | `proposal.md`, `spec.md` |
-| **Phase 2** | Step 5 | 前后端设计分离 | `design.md` |
-| **Phase 3** | Steps 6-7 | 前端 Mock 开发 → 验证 | Mock 数据 + 前端代码 |
-| **Phase 4** | Step 8 | 后端骨架（返回静态 Mock） | 后端 API 骨架 |
-| **Phase 5** | Step 9 | E2E 契约测试 | 测试用例 |
-| **Phase 6** | Step 10 | 真实实现（DB + Service） | 完整后端实现 |
-| **Phase 7** | Steps 11-12 | 真实测试 → Drift Check | 测试报告 |
-| **Phase 8** | Step 13 | 归档 | 归档文档 |
+| Phase | Steps | Description | Output |
+|-------|-------|-------------|--------|
+| **Phase 0** | Step 1 | Tech Stack Analysis | Tech stack document |
+| **Phase 1** | Steps 2-4 | Proposal → Validate → Spec (Contract) | `proposal.md`, `spec.md` |
+| **Phase 2** | Step 5 | Frontend/Backend Design Split | `design.md` |
+| **Phase 3** | Steps 6-7 | Frontend Mock Development → Verify | Mock data + Frontend code |
+| **Phase 4** | Step 8 | Backend Skeleton (returns static mock) | Backend API skeleton |
+| **Phase 5** | Step 9 | E2E Contract Testing | Test cases |
+| **Phase 6** | Step 10 | Real Implementation (DB + Service) | Complete backend |
+| **Phase 7** | Steps 11-12 | Real Testing → Drift Check | Test report |
+| **Phase 8** | Step 13 | Archive | Archive document |
 
-### 工作流说明
+### Workflow Description
 
-1. **Phase 0-1**：明确需求，生成契约（Spec）
-2. **Phase 2**：前后端设计分离，明确职责边界
-3. **Phase 3-4**：前端基于 Mock 开发，后端提供 Mock API
-4. **Phase 5**：编写契约测试，确保 API 符合 Spec
-5. **Phase 6**：实现真实后端逻辑
-6. **Phase 7**：运行测试，检查实现是否偏离契约
-7. **Phase 8**：归档完成的变更
+1. **Phase 0-1**: Define requirements, generate contract (Spec)
+2. **Phase 2**: Frontend/backend design split, clarify responsibilities
+3. **Phase 3-4**: Frontend develops with mock, backend provides mock API
+4. **Phase 5**: Write contract tests, ensure API matches Spec
+5. **Phase 6**: Implement real backend logic
+6. **Phase 7**: Run tests, check for implementation drift from contract
+7. **Phase 8**: Archive completed change
 
-## 📋 开发规范（内置）
+## 📋 Development Standards (Built-in)
 
-### 数据处理
+### Data Processing
 
-- ❌ **禁止前端分页、排序、过滤**
-- ❌ **禁止伪分页**（前端分页后端全量数据）
-- ✅ **使用服务端分页**
+- ❌ **No frontend pagination, sorting, filtering**
+- ❌ **No pseudo-pagination** (frontend pagination with full backend data)
+- ✅ **Use server-side pagination**
 
-### API 设计
+### API Design
 
-- ✅ 列表 API 必须支持 `page` + `page_size`
-- ✅ 必须返回 `total_count`
-- ❌ 禁止 `page_size > 100`
-- ✅ 使用统一的响应格式（StandardResp）
+- ✅ List APIs must support `page` + `page_size`
+- ✅ Must return `total_count`
+- ❌ No `page_size > 100`
+- ✅ Use unified response format (StandardResp)
 
-### 前端规范
+### Frontend Standards
 
-- ✅ 必须展示 Loading/Empty/Error 状态
-- ✅ API 调用通过数据获取库（如 React Query）
-- ✅ 日期/金额格式化在前端完成
+- ✅ Must display Loading/Empty/Error states
+- ✅ API calls through data fetching library (e.g., React Query)
+- ✅ Date/currency formatting done on frontend
 
-### 后端规范
+### Backend Standards
 
-- ✅ 列表查询默认 `limit = 20`
-- ✅ 使用参数化查询（防止 SQL 注入）
-- ✅ 慢查询（>1s）记录日志
-- ✅ 搜索、排序、分页在后端完成
+- ✅ List queries default `limit = 20`
+- ✅ Use parameterized queries (prevent SQL injection)
+- ✅ Log slow queries (>1s)
+- ✅ Search, sort, pagination done on backend
 
-## 🏗️ 基础架构规范（新增）
+## 🏗️ Infrastructure Standards
 
-### 错误码系统
+### Error Code System
 
-| 范围 | 类别 | 说明 |
-|------|------|------|
-| 1xxx | 客户端错误 | 无效输入、验证失败 |
-| 2xxx | 业务逻辑错误 | 业务规则违反 |
-| 3xxx | 外部服务错误 | 第三方 API 失败 |
-| 4xxx | 系统错误 | 数据库、网络、基础设施 |
-| 5xxx | 未知错误 | 意外异常 |
+| Range | Category | Description |
+|-------|----------|-------------|
+| 1xxx | Client Errors | Invalid input, validation failures |
+| 2xxx | Business Logic Errors | Business rule violations |
+| 3xxx | External Service Errors | Third-party API failures |
+| 4xxx | System Errors | Database, network, infrastructure |
+| 5xxx | Unknown Errors | Unexpected exceptions |
 
-**常用错误码**：
-- `1000`: Invalid Parameter（无效参数）
-- `1001`: Validation Failed（验证失败）
-- `1002`: Unauthorized（未授权）
-- `2000`: Resource Not Found（资源不存在）
-- `4000`: Database Error（数据库错误）
-- `5000`: Internal Server Error（内部服务器错误）
+**Common Error Codes**:
+- `1000`: Invalid Parameter
+- `1001`: Validation Failed
+- `1002`: Unauthorized
+- `2000`: Resource Not Found
+- `4000`: Database Error
+- `5000`: Internal Server Error
 
-### 统一响应格式（StandardResp）
+### Unified Response Format (StandardResp)
 
 ```typescript
 interface StandardResp<T> {
-  code: number;        // 0 表示成功，其他为错误码
-  message: string;     // 人类可读的消息
-  data: T | null;      // 响应数据（错误时为 null）
+  code: number;        // 0 = success, other = error code
+  message: string;     // Human-readable message
+  data: T | null;      // Response data (null on error)
 }
 ```
 
-**成功响应示例**：
+**Success Response Example**:
 ```json
 {
   "code": 0,
@@ -228,7 +229,7 @@ interface StandardResp<T> {
 }
 ```
 
-**错误响应示例**：
+**Error Response Example**:
 ```json
 {
   "code": 1000,
@@ -242,7 +243,7 @@ interface StandardResp<T> {
 }
 ```
 
-### 结构化日志
+### Structured Logging
 
 ```json
 {
@@ -258,214 +259,100 @@ interface StandardResp<T> {
 }
 ```
 
-**日志级别**：
-- **DEBUG**: 开发调试
-- **INFO**: 正常操作
-- **WARN**: 可恢复问题
-- **ERROR**: 应用错误
-- **CRITICAL**: 系统故障
+**Log Levels**:
+- **DEBUG**: Development debugging
+- **INFO**: Normal operations
+- **WARN**: Recoverable issues
+- **ERROR**: Application errors
+- **CRITICAL**: System failures
 
-### 中间件架构
+### Middleware Architecture
 
-**标准中间件执行顺序**：
-1. CORS（首先）
-2. Request ID 生成
-3. 日志（请求开始）
-4. 认证
-5. 验证
-6. 业务逻辑处理器
-7. 日志（响应）
-8. 错误处理器（最后）
+**Standard Middleware Execution Order**:
+1. CORS (first)
+2. Request ID generation
+3. Logging (request start)
+4. Authentication
+5. Validation
+6. Business logic handler
+7. Logging (response)
+8. Error handler (last)
 
-### 开发模式支持
+### Development Mode Support
 
-| 模式 | 说明 | 适用场景 |
-|------|------|----------|
-| **fullstack** | 完整前后端 + 中间件 | 端到端功能开发 |
-| **frontend-only** | 仅前端 + Mock 后端 | 前端独立开发 |
-| **backend-only** | 仅后端 API | 后端独立开发 |
-| **middleware-only** | 仅中间件/基础设施 | 基础设施开发 |
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| **fullstack** | Complete frontend + backend + middleware | End-to-end feature development |
+| **frontend-only** | Frontend only + mock backend | Independent frontend development |
+| **backend-only** | Backend API only | Independent backend development |
+| **middleware-only** | Middleware/infrastructure only | Infrastructure development |
 
+## 🎯 Core Principles
 
-## 🎯 核心原则
+1. **Spec First** - Write Spec before implementation
+2. **Mock Before Real** - Mock first, then real
+3. **Contract as Truth** - Spec is the single source of truth
+4. **Verify at Every Gate** - Validate at each Phase
 
-1. **Spec First** - 先写 Spec，再写实现
-2. **Mock Before Real** - 先 Mock，后真实
-3. **Contract as Truth** - Spec 是唯一真相源
-4. **Verify at Every Gate** - 每个 Phase 验证
+## 🔧 Customization
 
-## 🔧 自定义配置
+### Configure Development Mode
 
-### 配置开发模式
-
-编辑 `openspec/config.yaml`：
+Edit `openspec/config.yaml`:
 
 ```yaml
-# 开发模式选择
-dev_mode: fullstack  # 可选: fullstack, frontend-only, backend-only, middleware-only
+# Development mode selection
+dev_mode: fullstack  # Options: fullstack, frontend-only, backend-only, middleware-only
 ```
 
-**使用场景**：
-- **fullstack**：团队协作，前后端同步开发
-- **frontend-only**：前端先行，使用 Mock 数据快速迭代 UI
-- **backend-only**：后端先行，专注 API 和业务逻辑
-- **middleware-only**：基础设施开发，如认证、日志、错误处理
+**Use Cases**:
+- **fullstack**: Team collaboration, synchronized frontend-backend development
+- **frontend-only**: Frontend-first, rapid UI iteration with mock data
+- **backend-only**: Backend-first, focus on API and business logic
+- **middleware-only**: Infrastructure development like auth, logging, error handling
 
-### 生成基础架构规范
+### Customize Workflow
 
-对于新项目，建议先生成 `infrastructure.md`：
+Edit `openspec/schemas/workflow/schema.yaml` to customize workflow steps.
+Edit `openspec/schemas/workflow/templates/*.md` to customize artifact templates.
 
-```bash
-# 在 Cursor 中
-/opsx:new infrastructure
-```
+### Workflow Schema Notes
 
-这将生成包含以下内容的规范文档：
-- 日志系统（结构化日志、日志级别）
-- 错误处理系统（错误码定义、错误响应格式）
-- 请求/响应格式（StandardResp、分页格式）
-- 控制台输出格式（开发/生产模式）
-- 中间件架构（执行顺序、标准组件）
-- 开发模式配置
+The workflow schema uses 13-Step Contract-First process, different from the default spec-driven schema:
 
-### 修改工作流
+| Feature | spec-driven | workflow |
+|---------|-------------|----------|
+| Spec Structure | `specs/` directory (multi-file) | Single `spec.md` |
+| Validation Command | `openspec validate` | Check via apply |
+| Proposal Format | `## Why` / `## What Changes` | `## Background & Goals` / `## Non-Goals` |
 
-编辑 `openspec/schemas/workflow.yaml` 自定义工作流步骤。
+**Important**: `openspec validate` is designed for spec-driven schema. For workflow schema, use `openspec instructions apply --json` to check task completion status.
 
-**注意**：
-- 核心的 13 步工作流结构应保持不变
-- `infrastructure` artifact 是可选的（`optional: true`）
-- 可以添加自定义的 rules 和 dependencies
+**Note**:
+- Keep the core 13-step workflow structure unchanged
+- `infrastructure` artifact is optional (`optional: true`)
+- Custom rules and dependencies can be added
 
-### 修改模板
+### Add Project Context
 
-编辑 `openspec/templates/` 下的 Handlebars 模板文件。
-
-**可用模板变量**：
-- `{{ project_name }}`: 项目名称
-- `{{ dev_mode }}`: 开发模式
-- `{{ user_input }}`: 用户输入
-- `{{ feature_name }}`: 功能名称
-
-**Handlebars 条件语句**：
-```handlebars
-{{#if (eq dev_mode "frontend-only")}}
-  前端独立开发模式的内容
-{{/if}}
-
-{{#unless (eq dev_mode "backend-only")}}
-  非后端独立模式的内容
-{{/unless}}
-```
-
-### 添加项目上下文
-
-在 `openspec/context/` 目录下添加更多上下文文件，并在 `config.yaml` 中配置：
+Add more context files in `openspec/context/` and configure in `config.yaml`:
 
 ```yaml
 global_context:
   - "context/project_summary.md"
   - "context/tech_stack.md"
-  - "context/infrastructure.md"  # 基础架构规范
-  - "context/custom_context.md"  # 自定义上下文
+  - "context/infrastructure.md"  # Infrastructure spec
+  - "context/custom_context.md"  # Custom context
 ```
 
-## 🚀 高级用法
+## 📚 Resources
 
-### 使用 Ralph Loop 进行自我优化
+- [OpenSpec Documentation](https://github.com/anthropics/openspec)
+- [Cursor Skills Documentation](https://cursor.sh/docs)
 
-Ralph Loop 是一个自我迭代优化工具，可以持续改进项目：
+## 🤝 Contributing
 
-```bash
-# 在 Cursor 中
-/ralph-loop:ralph-loop "优化任务描述"
-```
-
-**示例**：
-```bash
-/ralph-loop:ralph-loop "优化所有模板的 Handlebars 语法，确保符合最佳实践"
-```
-
-**Ralph Loop 工作原理**：
-1. 尝试任务
-2. 验证结果
-3. 评估是否达标
-4. 如果未达标，分析失败原因并改进
-5. 重复直到达到要求
-
-**使用建议**：
-- 设置明确的完成承诺（completion promise）
-- 设置合理的最大迭代次数（max iterations）
-- 用于模板优化、规范检查、代码质量提升等任务
-
-### 独立开发模式工作流
-
-#### 前端独立开发（frontend-only）
-
-1. 配置 `dev_mode: frontend-only`
-2. 生成 Spec：`/opsx:new feature-name`
-3. 生成 Design（会包含 Mock 服务器配置）
-4. 实现前端：使用 Mock 数据开发 UI
-5. 验证：测试 UI 组件和交互
-
-**优势**：
-- 无需等待后端实现
-- 快速迭代 UI
-- Mock 数据来自 Spec，确保契约一致
-
-#### 后端独立开发（backend-only）
-
-1. 配置 `dev_mode: backend-only`
-2. 生成 Spec：`/opsx:new feature-name`
-3. 生成 Design（会跳过前端架构）
-4. 实现后端：API + 业务逻辑 + 数据库
-5. 验证：使用 Postman/curl 测试 API
-
-**优势**：
-- 专注后端逻辑
-- 使用 API 测试工具验证
-- 自动配置 CORS 以便未来前端集成
-
-#### 中间件独立开发（middleware-only）
-
-1. 配置 `dev_mode: middleware-only`
-2. 生成 Infrastructure Spec
-3. 实现中间件：认证、验证、日志、错误处理
-4. 测试：使用 Mock 处理器测试中间件行为
-
-**优势**：
-- 隔离测试中间件
-- 建立基础设施标准
-- 可复用到所有功能
-
-### 契约验证
-
-确保实现符合 Spec：
-
-```bash
-# 验证实现
-/opsx:verify feature-name
-
-# 检查开发规范
-/opsx:check-standards
-```
-
-**验证内容**：
-- API 响应格式是否匹配 Spec
-- 错误码是否符合标准
-- 日志是否包含 trace_id
-- 分页格式是否正确
-- StandardResp 结构是否一致
-
-
-## 📚 相关资源
-
-- [OpenSpec 文档](https://github.com/wisterx-spec/openspec)
-- [Cursor Skills 文档](https://cursor.sh/docs)
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
 ## 📄 License
 

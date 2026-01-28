@@ -13,3 +13,6 @@ openspec/context/tech_stack.md
 
 # OS
 .DS_Store
+
+# IDE
+.cursor/

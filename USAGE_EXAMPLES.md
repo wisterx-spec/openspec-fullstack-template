@@ -1,88 +1,88 @@
-# OpenSpec Template 使用示例
+# OpenSpec Template Usage Examples
 
-本文档提供了 OpenSpec Fullstack Template 的实际使用示例，展示如何使用新增的基础架构和开发模式功能。
+This document provides practical usage examples for the OpenSpec Fullstack Template, demonstrating how to use the new infrastructure and development mode features.
 
-## 目录
+## Table of Contents
 
-1. [新项目完整流程](#新项目完整流程)
-2. [前端独立开发示例](#前端独立开发示例)
-3. [后端独立开发示例](#后端独立开发示例)
-4. [中间件开发示例](#中间件开发示例)
-5. [基础架构初始化示例](#基础架构初始化示例)
+1. [Complete New Project Flow](#complete-new-project-flow)
+2. [Frontend-Only Development Example](#frontend-only-development-example)
+3. [Backend-Only Development Example](#backend-only-development-example)
+4. [Middleware Development Example](#middleware-development-example)
+5. [Infrastructure Initialization Example](#infrastructure-initialization-example)
 
 ---
 
-## 新项目完整流程
+## Complete New Project Flow
 
-### 场景：创建一个用户管理系统
+### Scenario: Creating a User Management System
 
-#### 步骤 1：项目初始化
+#### Step 1: Project Initialization
 
 ```bash
-# 1. 复制模板到项目
+# 1. Copy template to project
 cp -r openspec-fullstack-template/openspec/ my-project/openspec/
 cp -r openspec-fullstack-template/skills/ my-project/.cursor/skills/
 
-# 2. 进入项目目录
+# 2. Enter project directory
 cd my-project
 
-# 3. 配置项目信息
+# 3. Configure project information
 cd openspec/context/
 mv project_summary.template.md project_summary.md
 mv tech_stack.template.md tech_stack.md
 
-# 4. 编辑项目信息
-# 编辑 project_summary.md 和 tech_stack.md
+# 4. Edit project information
+# Edit project_summary.md and tech_stack.md
 ```
 
-#### 步骤 2：配置开发模式
+#### Step 2: Configure Development Mode
 
-编辑 `openspec/config.yaml`:
+Edit `openspec/config.yaml`:
 
 ```yaml
 project:
   name: "User Management System"
-  language: "zh-CN"
+  language: "en"
 
-# 选择开发模式
-dev_mode: fullstack  # 完整前后端开发
+# Select development mode
+dev_mode: fullstack  # Complete frontend + backend development
 
 global_context:
   - "context/project_summary.md"
   - "context/tech_stack.md"
-  - "context/infrastructure.md"  # 将在下一步生成
+  - "context/infrastructure.md"  # Will be generated in next step
 ```
 
-#### 步骤 3：生成基础架构规范
+#### Step 3: Generate Infrastructure Spec
 
-在 Cursor 中执行：
+In Cursor, execute:
 
 ```bash
 /opsx:new infrastructure
 ```
 
-这将生成 `openspec/context/infrastructure.md`，包含：
-- 日志系统规范
-- 错误码定义（1000-5000）
-- StandardResp 响应格式
-- 中间件架构
-- 开发模式配置
+This generates `openspec/context/infrastructure.md`, containing:
+- Logging system specification
+- Error code definitions (1000-5000)
+- StandardResp response format
+- Middleware architecture
+- Development mode configuration
 
-#### 步骤 4：创建用户管理功能
+#### Step 4: Create User Management Feature
 
 ```bash
 /opsx:new user-management
 ```
 
-系统会引导你完成：
-1. **Proposal（提案）**：定义用户管理的需求和用户故事
-2. **Spec（契约）**：定义 API 端点和数据库 schema
-3. **Design（设计）**：前后端架构设计
-4. **Tasks（任务）**：具体实现任务
+The system will guide you through:
+1. **Proposal**: Define user management requirements and user stories
+2. **Spec**: Define API endpoints and database schema
+3. **Design**: Frontend and backend architecture design
+4. **Tasks**: Specific implementation tasks
 
-#### 步骤 5：查看生成的 Spec
+#### Step 5: View Generated Spec
 
-`openspec/changes/user-management/spec.md` 示例：
+`openspec/changes/user-management/spec.md` example:
 
 ```markdown
 # User Management - API Specification
@@ -136,54 +136,54 @@ global_context:
 | 2000 | Resource Not Found | User not found |
 ```
 
-#### 步骤 6：实现功能
+#### Step 6: Implement Feature
 
 ```bash
 /opsx:apply user-management
 ```
 
-系统会根据 `tasks.md` 逐步实现：
-- Phase 3: 前端 Mock 开发
-- Phase 4: 后端骨架（返回静态 Mock）
-- Phase 5: E2E 契约测试
-- Phase 6: 真实实现（数据库 + 业务逻辑）
-- Phase 7: 真实测试 + Drift Check
+The system implements according to `tasks.md`:
+- Phase 3: Frontend mock development
+- Phase 4: Backend skeleton (returns static mock)
+- Phase 5: E2E contract testing
+- Phase 6: Real implementation (database + business logic)
+- Phase 7: Real testing + Drift Check
 
-#### 步骤 7：验证实现
+#### Step 7: Verify Implementation
 
 ```bash
 /opsx:verify user-management
 ```
 
-验证：
-- API 响应格式是否匹配 Spec
-- 错误码是否正确
-- 日志是否包含 trace_id
-- 分页格式是否正确
+Verification includes:
+- API response format matches Spec
+- Error codes are correct
+- Logs include trace_id
+- Pagination format is correct
 
 ---
 
-## 前端独立开发示例
+## Frontend-Only Development Example
 
-### 场景：前端团队先行开发 UI，后端尚未就绪
+### Scenario: Frontend team develops UI first, backend not ready yet
 
-#### 步骤 1：配置前端独立模式
+#### Step 1: Configure Frontend-Only Mode
 
-编辑 `openspec/config.yaml`:
+Edit `openspec/config.yaml`:
 
 ```yaml
-dev_mode: frontend-only  # 前端独立开发模式
+dev_mode: frontend-only  # Frontend-only development mode
 ```
 
-#### 步骤 2：创建功能
+#### Step 2: Create Feature
 
 ```bash
 /opsx:new product-list
 ```
 
-#### 步骤 3：查看生成的 Design
+#### Step 3: View Generated Design
 
-`openspec/changes/product-list/design.md` 会包含：
+`openspec/changes/product-list/design.md` will contain:
 
 ```markdown
 ## 0. Development Mode Configuration
@@ -207,9 +207,9 @@ dev_mode: frontend-only  # 前端独立开发模式
 - How to simulate error responses: Use MSW handlers with error codes from infrastructure.md
 ```
 
-#### 步骤 4：查看生成的 Tasks
+#### Step 4: View Generated Tasks
 
-`openspec/changes/product-list/tasks.md` 会包含：
+`openspec/changes/product-list/tasks.md` will contain:
 
 ```markdown
 ## Phase 3: Frontend Mock Dev (Steps 6-7)
@@ -226,54 +226,54 @@ dev_mode: frontend-only  # 前端独立开发模式
   - Status: Skipped (frontend-only mode)
 ```
 
-#### 步骤 5：实现前端
+#### Step 5: Implement Frontend
 
 ```bash
 /opsx:apply product-list
 ```
 
-实现内容：
-- 使用 MSW 创建 Mock 服务器
-- 实现 UI 组件
-- 使用 `spec.md` 中的 JSON 作为 Mock 数据
-- 测试 UI 交互和数据渲染
+Implementation includes:
+- Create mock server using MSW
+- Implement UI components
+- Use JSON from `spec.md` as mock data
+- Test UI interactions and data rendering
 
-#### 步骤 6：后端就绪后切换模式
+#### Step 6: Switch Mode When Backend Ready
 
-当后端 API 就绪后，修改 `config.yaml`:
+When backend API is ready, modify `config.yaml`:
 
 ```yaml
-dev_mode: fullstack  # 切换到全栈模式
+dev_mode: fullstack  # Switch to fullstack mode
 ```
 
-然后连接真实后端：
+Then connect to real backend:
 ```bash
-/opsx:apply product-list  # 继续实现，连接真实 API
+/opsx:apply product-list  # Continue implementation, connect to real API
 ```
 
 ---
 
-## 后端独立开发示例
+## Backend-Only Development Example
 
-### 场景：后端团队专注 API 开发，前端由其他团队负责
+### Scenario: Backend team focuses on API development, frontend handled by another team
 
-#### 步骤 1：配置后端独立模式
+#### Step 1: Configure Backend-Only Mode
 
-编辑 `openspec/config.yaml`:
+Edit `openspec/config.yaml`:
 
 ```yaml
-dev_mode: backend-only  # 后端独立开发模式
+dev_mode: backend-only  # Backend-only development mode
 ```
 
-#### 步骤 2：创建功能
+#### Step 2: Create Feature
 
 ```bash
 /opsx:new order-management
 ```
 
-#### 步骤 3：查看生成的 Design
+#### Step 3: View Generated Design
 
-`openspec/changes/order-management/design.md` 会包含：
+`openspec/changes/order-management/design.md` will contain:
 
 ```markdown
 ## 0. Development Mode Configuration
@@ -303,7 +303,7 @@ dev_mode: backend-only  # 后端独立开发模式
 - Error handling: Use error codes from infrastructure.md
 ```
 
-#### 步骤 4：查看生成的 Tasks
+#### Step 4: View Generated Tasks
 
 ```markdown
 ## Phase 3: Frontend Mock Dev (Steps 6-7)
@@ -325,25 +325,25 @@ dev_mode: backend-only  # 后端独立开发模式
   - Action: Test error responses and error codes
 ```
 
-#### 步骤 5：实现后端
+#### Step 5: Implement Backend
 
 ```bash
 /opsx:apply order-management
 ```
 
-实现内容：
-- 创建 API 路由
-- 实现业务逻辑
-- 配置数据库模型和迁移
-- 添加中间件（认证、验证、日志）
-- 使用 Postman 测试 API
+Implementation includes:
+- Create API routes
+- Implement business logic
+- Configure database models and migrations
+- Add middleware (authentication, validation, logging)
+- Test API with Postman
 
-#### 步骤 6：API 测试示例
+#### Step 6: API Test Example
 
-使用 Postman 测试：
+Test with Postman:
 
 ```bash
-# 创建订单
+# Create order
 POST http://localhost:8000/api/orders
 Headers:
   Content-Type: application/json
@@ -356,7 +356,7 @@ Body:
   ]
 }
 
-# 预期响应
+# Expected response
 {
   "code": 0,
   "message": "success",
@@ -372,25 +372,25 @@ Body:
 
 ---
 
-## 中间件开发示例
+## Middleware Development Example
 
-### 场景：建立项目的基础设施层（认证、日志、错误处理）
+### Scenario: Establish project infrastructure layer (authentication, logging, error handling)
 
-#### 步骤 1：配置中间件独立模式
+#### Step 1: Configure Middleware-Only Mode
 
-编辑 `openspec/config.yaml`:
+Edit `openspec/config.yaml`:
 
 ```yaml
-dev_mode: middleware-only  # 中间件独立开发模式
+dev_mode: middleware-only  # Middleware-only development mode
 ```
 
-#### 步骤 2：创建中间件功能
+#### Step 2: Create Middleware Feature
 
 ```bash
 /opsx:new authentication-middleware
 ```
 
-#### 步骤 3：查看生成的 Design
+#### Step 3: View Generated Design
 
 ```markdown
 ## 0. Development Mode Configuration
@@ -425,7 +425,7 @@ dev_mode: middleware-only  # 中间件独立开发模式
 - Test error handling and logging
 ```
 
-#### 步骤 4：实现中间件
+#### Step 4: Implement Middleware
 
 ```python
 # backend/app/middleware/auth.py
@@ -482,7 +482,7 @@ async def auth_middleware(request: Request, call_next):
     return response
 ```
 
-#### 步骤 5：测试中间件
+#### Step 5: Test Middleware
 
 ```python
 # tests/test_auth_middleware.py
@@ -506,50 +506,50 @@ def test_auth_middleware_valid_token(client: TestClient):
 
 ---
 
-## 基础架构初始化示例
+## Infrastructure Initialization Example
 
-### 场景：新项目初始化，建立基础设施标准
+### Scenario: New project initialization, establishing infrastructure standards
 
-#### 步骤 1：生成基础架构规范
+#### Step 1: Generate Infrastructure Spec
 
 ```bash
 /opsx:new infrastructure
 ```
 
-#### 步骤 2：查看生成的 infrastructure.md
+#### Step 2: View Generated infrastructure.md
 
-文件包含：
+The file contains:
 
-1. **日志系统**
-   - 日志级别（DEBUG/INFO/WARN/ERROR/CRITICAL）
-   - 结构化日志格式（JSON）
-   - 必需字段（timestamp, level, trace_id, message, context）
+1. **Logging System**
+   - Log levels (DEBUG/INFO/WARN/ERROR/CRITICAL)
+   - Structured log format (JSON)
+   - Required fields (timestamp, level, trace_id, message, context)
 
-2. **错误处理系统**
-   - 错误码结构（1xxx-5xxx）
-   - 标准错误码列表
-   - 错误响应格式
+2. **Error Handling System**
+   - Error code structure (1xxx-5xxx)
+   - Standard error code list
+   - Error response format
 
-3. **请求/响应格式**
-   - StandardResp 接口定义
-   - 成功响应示例
-   - 错误响应示例
-   - 分页响应格式
+3. **Request/Response Format**
+   - StandardResp interface definition
+   - Success response example
+   - Error response example
+   - Pagination response format
 
-4. **中间件架构**
-   - 标准中间件组件
-   - 执行顺序
-   - 实现指南
+4. **Middleware Architecture**
+   - Standard middleware components
+   - Execution order
+   - Implementation guidelines
 
-5. **开发模式支持**
-   - 4 种开发模式说明
-   - 每种模式的配置示例
+5. **Development Mode Support**
+   - 4 development modes explained
+   - Configuration examples for each mode
 
-#### 步骤 3：实现基础架构
+#### Step 3: Implement Infrastructure
 
-根据 `infrastructure.md` 实现：
+Based on `infrastructure.md`, implement:
 
-**日志系统**:
+**Logging System**:
 ```python
 # backend/app/utils/logger.py
 import logging
@@ -579,7 +579,7 @@ class StructuredLogger:
             self.logger.info(json.dumps(log_entry))
 ```
 
-**错误码定义**:
+**Error Code Definitions**:
 ```python
 # backend/app/constants/error_codes.py
 class ErrorCode:
@@ -608,11 +608,11 @@ ERROR_MESSAGES = {
     ErrorCode.INVALID_PARAMETER: "Invalid Parameter",
     ErrorCode.VALIDATION_FAILED: "Validation Failed",
     ErrorCode.UNAUTHORIZED: "Unauthorized",
-    # ... 其他错误码
+    # ... other error codes
 }
 ```
 
-**StandardResp 实现**:
+**StandardResp Implementation**:
 ```python
 # backend/app/models/response.py
 from typing import TypeVar, Generic, Optional
@@ -641,32 +641,31 @@ def error_response(code: int, message: str, trace_id: str, details: dict = None)
     )
 ```
 
-#### 步骤 4：验证基础架构
+#### Step 4: Verify Infrastructure
 
 ```bash
-# 运行测试
+# Run tests
 pytest tests/test_infrastructure.py
 
-# 检查日志格式
+# Check log format
 tail -f logs/app.log | jq .
 
-# 验证错误响应
+# Verify error response
 curl -X POST http://localhost:8000/api/test-error \
   -H "X-Request-ID: test-123"
 ```
 
 ---
 
-## 总结
+## Summary
 
-这些示例展示了如何使用 OpenSpec Template 的新功能：
+These examples demonstrate how to use the OpenSpec Template's new features:
 
-1. **基础架构规范**：为项目建立统一的日志、错误处理、响应格式标准
-2. **开发模式**：支持前端、后端、中间件独立开发，提高团队并行效率
-3. **契约优先**：确保前后端接口一致，减少联调成本
-4. **自动验证**：每个阶段自动验证，确保实现符合契约
+1. **Infrastructure Standards**: Establish unified logging, error handling, and response format standards for projects
+2. **Development Modes**: Support frontend, backend, and middleware independent development, improving team parallelism
+3. **Contract First**: Ensure frontend-backend interface consistency, reduce integration costs
+4. **Auto Verification**: Automatic verification at each phase ensures implementation matches contract
 
-更多信息请参考：
-- [README.md](README.md) - 完整使用指南
-- [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) - 优化详情
-- [openspec/templates/infrastructure.hbs](openspec/templates/infrastructure.hbs) - 基础架构模板
+For more information, see:
+- [README.md](README.md) - Complete usage guide
+- [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) - Optimization details
