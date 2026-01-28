@@ -1,99 +1,50 @@
 #!/bin/bash
-
-# OpenSpec Fullstack Template 初始化脚本
-# 用法: ./init.sh /path/to/project --stack fastapi+react
+# OpenSpec Fullstack Template - Initialization Script
+# Usage: ./init.sh <project_name> <target_directory>
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET_DIR=""
-STACK=""
+PROJECT_NAME="${1:-MyProject}"
+TARGET_DIR="${2:-.}"
 
-# 解析参数
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --stack)
-            STACK="$2"
-            shift 2
-            ;;
-        *)
-            TARGET_DIR="$1"
-            shift
-            ;;
-    esac
-done
+echo "Initializing OpenSpec for: $PROJECT_NAME"
+echo "Target directory: $TARGET_DIR"
 
-if [ -z "$TARGET_DIR" ]; then
-    echo "用法: ./init.sh /path/to/project --stack fastapi+react"
-    echo ""
-    echo "支持的技术栈:"
-    echo "  --stack fastapi+react    FastAPI 后端 + React 前端"
-    echo "  --stack fastapi          仅 FastAPI 后端"
-    echo "  --stack react            仅 React 前端"
-    exit 1
-fi
+# Create directories
+mkdir -p "$TARGET_DIR/openspec/"{schemas,templates,context,specs,changes}
+mkdir -p "$TARGET_DIR/.cursor/skills"
 
-# 创建目标目录
-mkdir -p "$TARGET_DIR"
+# Copy core files
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-echo "初始化项目: $TARGET_DIR"
-echo "技术栈: ${STACK:-未指定}"
-echo ""
+cp "$SCRIPT_DIR/openspec/config.yaml" "$TARGET_DIR/openspec/"
+cp "$SCRIPT_DIR/openspec/schemas/workflow.yaml" "$TARGET_DIR/openspec/schemas/"
+cp "$SCRIPT_DIR/openspec/templates/"*.hbs "$TARGET_DIR/openspec/templates/"
 
-# 1. 复制 OpenSpec 配置
-echo "复制 OpenSpec 配置..."
-mkdir -p "$TARGET_DIR/.claude/commands"
-cp -r "$SCRIPT_DIR/.claude/commands/openspec" "$TARGET_DIR/.claude/commands/"
-cp -r "$SCRIPT_DIR/openspec" "$TARGET_DIR/"
+# Create context files from templates
+sed "s/{{ PROJECT_NAME }}/$PROJECT_NAME/g" \
+    "$SCRIPT_DIR/openspec/context/project_summary.template.md" \
+    > "$TARGET_DIR/openspec/context/project_summary.md"
 
-# 2. 根据技术栈复制模板
-case $STACK in
-    fastapi+react)
-        echo "复制 FastAPI 后端模板..."
-        mkdir -p "$TARGET_DIR/backend/app"
-        cp -r "$SCRIPT_DIR/templates/fastapi/"* "$TARGET_DIR/backend/app/"
+cp "$SCRIPT_DIR/openspec/context/tech_stack.template.md" \
+   "$TARGET_DIR/openspec/context/tech_stack.md"
 
-        echo "复制 React 前端模板..."
-        mkdir -p "$TARGET_DIR/frontend/src"
-        cp -r "$SCRIPT_DIR/templates/react/"* "$TARGET_DIR/frontend/src/"
-        ;;
-    fastapi)
-        echo "复制 FastAPI 后端模板..."
-        mkdir -p "$TARGET_DIR/backend/app"
-        cp -r "$SCRIPT_DIR/templates/fastapi/"* "$TARGET_DIR/backend/app/"
-        ;;
-    react)
-        echo "复制 React 前端模板..."
-        mkdir -p "$TARGET_DIR/frontend/src"
-        cp -r "$SCRIPT_DIR/templates/react/"* "$TARGET_DIR/frontend/src/"
-        ;;
-    "")
-        echo "未指定技术栈，仅复制 OpenSpec 配置"
-        ;;
-    *)
-        echo "不支持的技术栈: $STACK"
-        exit 1
-        ;;
-esac
+# Update config with project name
+sed -i '' "s/{{ PROJECT_NAME }}/$PROJECT_NAME/g" "$TARGET_DIR/openspec/config.yaml" 2>/dev/null || \
+sed -i "s/{{ PROJECT_NAME }}/$PROJECT_NAME/g" "$TARGET_DIR/openspec/config.yaml"
 
-# 3. 复制 CLAUDE.md
-echo "生成 CLAUDE.md..."
-cp "$SCRIPT_DIR/CLAUDE.template.md" "$TARGET_DIR/CLAUDE.md"
+# Copy skills
+cp -r "$SCRIPT_DIR/skills/"* "$TARGET_DIR/.cursor/skills/"
 
-# 4. 复制 .gitignore
-if [ ! -f "$TARGET_DIR/.gitignore" ]; then
-    echo "复制 .gitignore..."
-    cp "$SCRIPT_DIR/.gitignore.template" "$TARGET_DIR/.gitignore"
-fi
-
-# 5. 复制 .env.template
-echo "复制 .env.template..."
-cp "$SCRIPT_DIR/.env.template" "$TARGET_DIR/.env.template"
+# Create .gitkeep files
+touch "$TARGET_DIR/openspec/specs/.gitkeep"
+touch "$TARGET_DIR/openspec/changes/.gitkeep"
 
 echo ""
-echo "初始化完成！"
+echo "✅ OpenSpec initialized for $PROJECT_NAME"
 echo ""
-echo "下一步:"
-echo "  1. cd $TARGET_DIR"
-echo "  2. cp .env.template .env  # 配置环境变量"
-echo "  3. 根据需要修改 CLAUDE.md 中的项目规范"
+echo "Next steps:"
+echo "1. Edit openspec/context/project_summary.md - fill in project details"
+echo "2. Edit openspec/context/tech_stack.md - define your tech stack"
+echo "3. Run /opsx:onboard to learn the workflow"
+echo ""

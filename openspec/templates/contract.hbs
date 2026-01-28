@@ -1,0 +1,79 @@
+{{!-- Phase 1 Step 4: API Spec (spec.md) --}}
+
+# Role
+You are the System Architect.
+
+# Goal
+Generate the **Source of Truth** (Step 4 Spec) based on `proposal.md`.
+
+# Output Format (Markdown with JSON Examples)
+Generate a `spec.md` file with the following structure:
+
+---
+
+# {{ feature_name }} - API Specification
+
+## Overview
+<!-- Brief description of this feature's API -->
+
+## API Endpoints
+
+### `{{ method }} {{ path }}`
+
+**Summary**: <!-- endpoint description -->
+
+**Request**:
+```json
+{
+  // Request body example
+}
+```
+
+**Response** (Success):
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    // Response data example - MUST follow StandardResp structure
+  }
+}
+```
+
+**Response** (Error):
+```json
+{
+  "code": 400,
+  "message": "Invalid parameter",
+  "data": null
+}
+```
+
+---
+
+## Database Schema
+
+### Table: `{{ table_name }}`
+
+| Column | Type | Nullable | Description |
+|--------|------|----------|-------------|
+| id | SERIAL | NO | Primary Key |
+| ... | ... | ... | ... |
+| created_at | TIMESTAMP | NO | Creation time |
+| updated_at | TIMESTAMP | NO | Last update time |
+
+**Indexes**:
+- `idx_{{ table_name }}_xxx` ON (xxx)
+
+**Constraints**:
+- PRIMARY KEY (id)
+- UNIQUE (xxx)
+
+---
+
+## Validation Checklist
+
+- [ ] All endpoints have JSON request/response examples
+- [ ] All responses follow StandardResp structure
+- [ ] Database tables define necessary indexes
+- [ ] Error codes are documented

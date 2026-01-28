@@ -1,0 +1,31 @@
+# OpenSpec Configuration
+# Copy to your project's openspec/ directory and customize
+
+project:
+  name: "{{ PROJECT_NAME }}"      # Replace with your project name
+  language: "zh-CN"               # zh-CN or en-US
+
+# Default workflow
+default_schema: workflow
+
+# Global context files
+global_context:
+  - "context/project_summary.md"
+  - "context/tech_stack.md"
+
+# Template engine
+template_engine: handlebars
+
+# Template paths
+templates:
+  proposal: "templates/proposal.hbs"
+  contract: "templates/contract.hbs"
+  design: "templates/design.hbs"
+  tasks: "templates/tasks.hbs"
+
+# File naming conventions (no numeric prefixes)
+naming:
+  proposal: "proposal.md"
+  contract: "spec.md"
+  design: "design.md"
+  tasks: "tasks.md"

@@ -1,144 +1,127 @@
 # OpenSpec Fullstack Template
 
-AI 辅助全栈开发的工程化模板，解决"前后端接口不一致"、"联调成本高"的问题。
+13 步契约优先开发工作流模板，适用于全栈项目。
 
 ## 快速开始
 
-```bash
-# 1. 克隆模板
-git clone https://github.com/wisterx-spec/openspec-fullstack-template.git
-cd openspec-fullstack-template
-
-# 2. 复制到你的项目
-./init.sh /path/to/your-project --stack fastapi+react
-```
-
-## 包含内容
-
-```
-├── .claude/commands/openspec/    # OpenSpec 命令（含开发规范）
-├── openspec/                     # OpenSpec 基础配置
-├── templates/                    # 各技术栈的基础设施代码
-│   ├── fastapi/                  # FastAPI 后端模板
-│   ├── express/                  # Express 后端模板
-│   ├── react/                    # React 前端模板
-│   └── vue/                      # Vue 前端模板
-├── docs/
-│   └── dev-protocol.md           # 完整开发规范文档
-└── init.sh                       # 初始化脚本
-```
-
-## 核心规范
-
-### 统一响应格式
-
-```json
-{
-  "status": "ok",
-  "data": { ... },
-  "message": null
-}
-```
-
-### 分页格式
-
-```json
-{
-  "status": "ok",
-  "data": {
-    "items": [...],
-    "total": 100,
-    "page": 1,
-    "limit": 20,
-    "total_pages": 5
-  }
-}
-```
-
-### 职责边界
-
-| 功能 | 责任方 |
-|------|--------|
-| 搜索、排序、分页 | 后端 |
-| 数据计算、统计 | 后端 |
-| 日期/金额格式化展示 | 前端 |
-| 枚举字典维护 | 后端 |
-
-### 开发流程
-
-| 需求类型 | 流程 |
-|----------|------|
-| 简单（改文案） | 直接写 |
-| 涉及新接口 | 一句话说清接口，再写代码 |
-| 复杂功能 | 写 proposal，确认后再写代码 |
-
-## 使用方式
-
-### 方式一：完整初始化（新项目）
+### 1. 复制到你的项目
 
 ```bash
-./init.sh /path/to/new-project --stack fastapi+react
+# 复制 openspec 配置
+cp -r openspec-fullstack-template/openspec/ your-project/openspec/
+
+# 复制 skills（可选，放到 .cursor/skills/）
+cp -r openspec-fullstack-template/skills/ your-project/.cursor/skills/
 ```
 
-这会复制：
-- `.claude/commands/openspec/` - OpenSpec 命令
-- `openspec/` - OpenSpec 配置
-- 后端基础设施代码
-- 前端基础设施代码
-- `CLAUDE.md` - AI 规则
-
-### 方式二：仅复制规范（已有项目）
+### 2. 初始化项目上下文
 
 ```bash
-# 只复制 OpenSpec 命令和规范
-cp -r .claude/commands/openspec /path/to/existing-project/.claude/commands/
-cp -r openspec /path/to/existing-project/
+cd your-project/openspec/context/
+
+# 重命名模板文件
+mv project_summary.template.md project_summary.md
+mv tech_stack.template.md tech_stack.md
+
+# 编辑填写项目信息
 ```
 
-### 方式三：手动选择
+### 3. 更新配置
 
-按需复制你需要的部分：
+编辑 `openspec/config.yaml`，替换 `{{ PROJECT_NAME }}` 为你的项目名。
+
+### 4. 开始使用
 
 ```bash
-# 只要后端模板
-cp -r templates/fastapi/* /path/to/project/backend/app/
+# 查看可用命令
+/opsx:onboard    # 新手引导
 
-# 只要前端模板
-cp -r templates/react/* /path/to/project/frontend/src/
+# 创建新变更
+/opsx:new <name>       # 逐步创建 artifacts
+/opsx:ff <name>        # 快速生成所有 artifacts
+
+# 实现和验证
+/opsx:apply <name>     # 实现任务
+/opsx:check-standards  # 检查开发规范
+/opsx:verify <name>    # 验证实现
+
+# 归档
+/opsx:archive <name>   # 归档完成的变更
 ```
 
-## 技术栈支持
+## 目录结构
 
-### 后端
+```
+openspec/
+├── config.yaml                 # 入口配置
+├── schemas/
+│   └── workflow.yaml           # 13 步工作流定义
+├── templates/
+│   ├── proposal.hbs            # Phase 0-1 提案模板
+│   ├── contract.hbs            # Phase 1 Spec 模板
+│   ├── design.hbs              # Phase 2 设计模板
+│   └── tasks.hbs               # Phase 3-8 任务模板
+├── context/
+│   ├── project_summary.md      # 项目上下文（需填写）
+│   └── tech_stack.md           # 技术栈（需填写）
+├── specs/                      # 主规格文件（自动生成）
+└── changes/                    # 进行中的变更（自动生成）
 
-| 技术栈 | 状态 |
-|--------|------|
-| FastAPI (Python) | ✅ 完整 |
-| Express (Node.js) | 🚧 计划中 |
-| Go Gin | 🚧 计划中 |
+skills/
+├── openspec-new-change/        # 创建新变更
+├── openspec-continue-change/   # 继续创建 artifacts
+├── openspec-ff-change/         # 快速生成 artifacts
+├── openspec-apply-change/      # 实现任务
+├── openspec-check-standards/   # 检查开发规范
+├── openspec-verify-change/     # 验证实现
+├── openspec-archive-change/    # 归档变更
+├── openspec-bulk-archive-change/ # 批量归档
+├── openspec-explore/           # 探索模式
+├── openspec-onboard/           # 新手引导
+└── openspec-sync-specs/        # 同步 specs
+```
+
+## 13 步工作流
+
+| Phase | Steps | 描述 |
+|-------|-------|------|
+| Phase 0 | Step 1 | 技术栈分析 |
+| Phase 1 | Steps 2-4 | 提案 → 验证 → Spec（契约） |
+| Phase 2 | Step 5 | 前后端设计分离 |
+| Phase 3 | Steps 6-7 | 前端 Mock 开发 → 验证 |
+| Phase 4 | Step 8 | 后端骨架（返回静态 Mock） |
+| Phase 5 | Step 9 | E2E 契约测试 |
+| Phase 6 | Step 10 | 真实实现（DB + Service） |
+| Phase 7 | Steps 11-12 | 真实测试 → Drift Check |
+| Phase 8 | Step 13 | 归档 |
+
+## 开发规范（内置）
+
+### 数据处理
+- ❌ 禁止前端分页、排序、过滤
+- ❌ 禁止伪分页
+- ✅ 使用服务端分页
+
+### API 设计
+- ✅ 列表 API 必须支持 `page` + `page_size`
+- ✅ 必须返回 `total_count`
+- ❌ 禁止 `page_size > 100`
 
 ### 前端
+- ✅ 必须展示 Loading/Empty/Error 状态
+- ✅ API 调用通过数据获取库（如 React Query）
 
-| 技术栈 | 状态 |
-|--------|------|
-| React + TypeScript | ✅ 完整 |
-| Vue 3 + TypeScript | 🚧 计划中 |
+### 后端
+- ✅ 列表查询默认 `limit = 20`
+- ✅ 使用参数化查询
+- ✅ 慢查询（>1s）记录日志
 
-## 自定义
+## 核心原则
 
-### 修改响应格式
-
-编辑 `templates/[stack]/core/response.py` 或 `templates/[stack]/lib/request.ts`
-
-### 修改开发规范
-
-编辑 `.claude/commands/openspec/proposal.md` 中的 `# Core Development Protocol` 部分
-
-### 添加新技术栈
-
-1. 在 `templates/` 下创建新目录
-2. 实现基础设施代码
-3. 更新 `init.sh` 支持新技术栈
+1. **Spec First** - 先写 Spec，再写实现
+2. **Mock Before Real** - 先 Mock，后真实
+3. **Contract as Truth** - Spec 是唯一真相源
+4. **Verify at Every Gate** - 每个 Phase 验证
 
 ## License
 

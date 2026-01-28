@@ -1,0 +1,81 @@
+{{!-- 
+  Phase 3-8: Generate specific, actionable tasks based on Spec and Design artifacts.
+--}}
+# Role
+You are the Technical Lead for this project.
+
+# Context
+We are executing a strict 13-step workflow.
+You have access to:
+1. The Spec: `spec.md` (API & DB Schema with JSON examples)
+2. The Design: `design.md` (Architecture Split)
+
+# Objective
+Generate a `tasks.md` file. 
+CRITICAL: Do not just output generic steps. You MUST replace generic descriptions with SPECIFIC file paths, class names, and function names derived from the Contract and Design.
+
+# Output Format (Markdown)
+Please generate the response following this EXACT structure:
+
+---
+# Task Tracking: {{ input_description }}
+
+## Phase 0: Initialization (Step 1)
+- [x] **Task 0.1**: [Step 1] Analyze Tech Stack & Map Structure
+  - Status: Completed via Context Injection.
+
+## Phase 1: Definition (Steps 2-4)
+- [x] **Task 1.1**: [Step 2] Draft Proposal (Completed in `proposal.md`)
+- [x] **Task 1.2**: [Step 3] Validate Proposal Logic (User Verified)
+- [x] **Task 1.3**: [Step 4] Define Specs (Completed in `spec.md`)
+
+## Phase 2: Design Split (Step 5)
+- [x] **Task 2.1**: [Step 5] Frontend Component Design (Completed in `design.md`)
+- [x] **Task 2.2**: [Step 5] Backend Controller Interface (Completed in `design.md`)
+
+## Phase 3: Frontend Mock Dev (Steps 6-7)
+- [ ] **Task 3.1**: [Step 6] Implement Frontend with Mock Data
+  - Action: Create Mock Data conforming to `StandardResp` format.
+  - Action: Implement UI Components (List specific components mentioned in Design).
+- [ ] **Task 3.2**: [Step 7] Verify Frontend Features
+  - Action: Verify data rendering and interaction logic locally.
+
+## Phase 4: Backend Skeleton (Step 8)
+- [ ] **Task 4.1**: [Step 8] Implement Controller Skeleton
+  - Target: Create/Update Routers (List specific files).
+  - Constraint: Return **Static JSON** from Contract. **NO DB CONNECTION**.
+
+## Phase 5: Contract Testing (Step 9)
+- [ ] **Task 5.1**: [Step 9] Run E2E Tests (Mock Mode)
+  - Action: Write tests to verify the Skeleton API.
+
+## Phase 6: Implementation (Step 10)
+- [ ] **Task 6.1**: [Step 10] Database Models & Migrations
+  - Action: Create migration for tables: (List specific table names from Spec).
+  - Action: Update ORM models.
+  - Action: **Generate Seed Data** from `spec.md` JSON examples for dev/test database.
+- [ ] **Task 6.2**: [Step 10] Implement Service Logic
+  - Action: Implement business logic in (List specific Service classes).
+  - Action: Replace Mock return with Real DB queries.
+  - Constraint: **Must include Structured Logging** (Key fields: TaskID, Duration, RetryCount).
+  - Constraint: Critical errors must use Alert-level logging for monitoring.
+
+## Phase 7: Real Verification (Steps 11-12)
+- [ ] **Task 7.1**: [Step 11] Run Tests (Real DB)
+  - Action: Execute tests with test database.
+  - Command: (project-specific test command)
+- [ ] **Task 7.2**: [Step 12] Audit Code vs Spec (Automated Drift Check)
+  - Action: Verify OpenAPI schema matches `spec.md` definitions.
+  - Action: Compare response structures against Spec examples.
+  - Constraint: Drift rate must be < 1% (field names, types, required status).
+
+## Phase 8: Archive (Step 13)
+- [ ] **Task 8.1**: [Step 13] Prepare Archive
+  - Action: Run `openspec archive`.
+
+## Progress Summary
+| Phase | Status |
+|-------|--------|
+| Phase 0-2 | ✅ Done |
+| Phase 3-8 | ⏳ Pending |
+---

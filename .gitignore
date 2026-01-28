@@ -1,0 +1,15 @@
+# OpenSpec generated
+openspec/changes/*/
+!openspec/changes/.gitkeep
+openspec/specs/*/
+!openspec/specs/.gitkeep
+
+# Context (project-specific, not template)
+openspec/context/project_summary.md
+openspec/context/tech_stack.md
+
+# Keep templates
+!openspec/context/*.template.md
+
+# OS
+.DS_Store
