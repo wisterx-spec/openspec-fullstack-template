@@ -68,15 +68,34 @@ Implement tasks from an OpenSpec change.
 
    For each pending task:
    - Show which task is being worked on
-   - Make the code changes required
+   - **Identify task type**:
+     - **Code implementation task**: Make the code changes required
+     - **Test/Verification task**: Run the test command or verification step
+     - **Manual task**: Guide user through manual steps
    - Keep changes minimal and focused
    - Mark task complete in the tasks file: `- [ ]` → `- [x]`
    - Continue to next task
+
+   **Special handling for test/verification tasks**:
+   - **Task 5.1 (E2E Tests)**: Run the test command specified in the task
+     - If command is `<!-- project-specific test command -->`, ask user for the actual command
+     - Execute tests and verify they pass
+     - If tests fail, report failures and pause for user guidance
+   - **Task 7.1 (Real DB Tests)**: Run tests with real database
+     - Execute the test command
+     - Verify all scenarios from spec.md are covered
+   - **Task 7.2 (Drift Check)**: Perform automated drift check
+     - Verify OpenAPI schema matches spec.md
+     - Compare response structures
+     - Calculate drift rate (must be < 1%)
+     - Report any drift issues
+   - **Task 3.2, 7.1**: These are verification tasks - actually run the verification steps
 
    **Pause if:**
    - Task is unclear → ask for clarification
    - Implementation reveals a design issue → suggest updating artifacts
    - Error or blocker encountered → report and wait for guidance
+   - Test failures → report and wait for user to fix
    - User interrupts
 
 7. **On completion or pause, show status**
@@ -145,8 +164,27 @@ What would you like to do?
 - If implementation reveals issues, pause and suggest artifact updates
 - Keep code changes minimal and scoped to each task
 - Update task checkbox immediately after completing each task
+- **For test/verification tasks**: Actually run the tests/checks, don't just mark as done
+- **For tasks with placeholders** (like `<!-- project-specific test command -->`): Ask user for actual values
 - Pause on errors, blockers, or unclear requirements - don't guess
+- Pause on test failures - report and wait for user to fix
 - Use contextFiles from CLI output, don't assume specific file names
+
+## Task Type Detection
+
+Recognize task types from task descriptions:
+
+- **Code implementation**: Contains "Implement", "Create", "Update", "Add"
+- **Test task**: Contains "Run Tests", "Test", "Verify", "E2E", "Contract Testing"
+- **Verification task**: Contains "Verify", "Check", "Audit", "Drift Check"
+- **Manual task**: Contains "Run", "Execute" with command placeholders
+
+For test/verification tasks:
+1. Extract the test command if specified
+2. If command is a placeholder, ask user for actual command
+3. Run the command
+4. Verify results
+5. Mark complete only if tests pass or verification succeeds
 
 **Fluid Workflow Integration**
 

@@ -301,11 +301,44 @@ apply:
     3. Mark tasks complete as you go: `- [x]`
     4. Pause if you hit blockers or need clarification
     
+    **Task Type Handling**:
+    
+    **Code Implementation Tasks** (Phase 3, 4, 6):
+    - Implement the required code changes
+    - Keep changes minimal and focused
+    - Mark complete after code is written and verified
+    
+    **Test/Verification Tasks** (Phase 5, 7):
+    - **Task 5.1 (E2E Tests)**: 
+      * Write test cases if not already written
+      * **Actually run the tests** using the test command
+      * If command is placeholder (`<!-- project-specific test command -->`), ask user for actual command
+      * Verify tests pass before marking complete
+      * If tests fail, report failures and pause for user to fix
+    - **Task 7.1 (Real DB Tests)**:
+      * **Actually execute tests** with test database
+      * Use the command specified in task (ask user if placeholder)
+      * Verify all scenarios from spec.md are covered
+      * Mark complete only if tests pass
+    - **Task 7.2 (Drift Check)**:
+      * **Actually perform drift check**:
+        - Verify OpenAPI schema matches spec.md definitions
+        - Compare response structures against Spec examples
+        - Calculate drift rate (must be < 1%)
+      * Report any drift issues
+      * Mark complete only if drift rate < 1%
+    - **Task 3.2 (Frontend Verification)**:
+      * Actually verify frontend features work
+      * Test loading/error/empty states
+      * Mark complete after verification
+    
     **Key Constraints**:
     - Phase 3-4: Use mock data from spec.md JSON examples
     - Phase 4: Return static JSON, NO database connection
     - Phase 6: Replace mock with real implementation
     - Phase 7: Verify drift rate < 1%
+    - **DO NOT skip test/verification tasks** - actually run them
+    - **DO NOT mark test tasks complete** without running tests
     
     **Infrastructure Compliance**:
     - All responses follow StandardResp format
