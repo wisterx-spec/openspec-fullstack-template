@@ -75,24 +75,22 @@
   - Action: Return StandardResp format with mock data
   - Action: Implement error responses with error codes from `infrastructure.md`
 
----
-
-## Phase 5: Contract Testing (Step 9)
-
-- [ ] **Task 5.1**: [Step 9] Run E2E Tests (Mock Mode)
+- [ ] **Task 4.2**: [Step 8] Test Backend Skeleton (Contract Testing)
   - Action: Write tests to verify the Skeleton API
   - Action: Verify response format matches `spec.md`
   - Action: Test error responses and error codes
   - Action: Verify trace_id in responses
   - Constraint: All responses must follow StandardResp structure
+  - Command: `<!-- project-specific test command -->`
+  - **Important**: Run tests immediately after Task 4.1, don't wait until Phase 7
 
 ---
 
-## Phase 6: Implementation (Step 10)
+## Phase 5: Implementation (Step 10)
 
 <!-- Backend tasks - Skip if frontend-only mode -->
 
-- [ ] **Task 6.1**: [Step 10] Database Models & Migrations
+- [ ] **Task 5.1**: [Step 10] Database Models & Migrations
   - Action: Create migration for tables:
     - `<!-- table 1 name -->`
     - `<!-- table 2 name -->`
@@ -100,7 +98,15 @@
   - Action: **Generate Seed Data** from `spec.md` JSON examples for dev/test database
   - Action: Verify indexes are created as specified in `spec.md`
 
-- [ ] **Task 6.2**: [Step 10] Implement Service Logic
+- [ ] **Task 5.2**: [Step 10] Test Database Migrations
+  - Action: Run migration tests
+  - Action: Verify tables are created correctly
+  - Action: Verify indexes exist
+  - Action: Verify seed data is loaded
+  - Command: `<!-- project-specific migration test command -->`
+  - **Important**: Test immediately after Task 5.1, catch migration issues early
+
+- [ ] **Task 5.3**: [Step 10] Implement Service Logic
   - Action: Implement business logic in:
     - `<!-- service class path -->`
   - Action: Replace Mock return with Real DB queries
@@ -113,24 +119,41 @@
   - Action: Implement request validation using middleware
   - Action: Add authentication checks where required
 
+- [ ] **Task 5.4**: [Step 10] Test Service Logic (Unit Tests)
+  - Action: Write unit tests for service methods
+  - Action: Test business logic with test database
+  - Action: Verify error handling and error codes
+  - Action: Verify logging is implemented correctly
+  - Command: `<!-- project-specific unit test command -->`
+  - **Important**: Test immediately after Task 5.3, catch logic errors early
+
 <!-- Frontend connection - Skip if backend-only mode -->
 
-- [ ] **Task 6.3**: [Step 10] Connect Frontend to Real Backend
+- [ ] **Task 5.5**: [Step 10] Connect Frontend to Real Backend
   - Action: Update API client to use real backend URL
   - Action: Remove mock server/data
   - Action: Test frontend with real API
   - Action: Verify error handling with real error responses
 
+- [ ] **Task 5.6**: [Step 10] Test Frontend-Backend Integration
+  - Action: Run integration tests
+  - Action: Test complete user flows end-to-end
+  - Action: Verify all scenarios from `spec.md`
+  - Command: `<!-- project-specific integration test command -->`
+  - **Important**: Test immediately after Task 5.5, catch integration issues early
+
 ---
 
-## Phase 7: Real Verification (Steps 11-12)
+## Phase 6: Final Verification (Steps 11-12)
 
-- [ ] **Task 7.1**: [Step 11] Run Tests (Real DB)
-  - Action: Execute tests with test database
+- [ ] **Task 6.1**: [Step 11] Run Full Test Suite
+  - Action: Execute all tests with test database
   - Command: `<!-- project-specific test command -->`
-  - Action: Verify all scenarios from `spec.md`
+  - Action: Verify all scenarios from `spec.md` are covered
+  - Action: Verify test coverage meets requirements
+  - **Note**: This is a final comprehensive check, individual tests should have been run in previous phases
 
-- [ ] **Task 7.2**: [Step 12] Audit Code vs Spec (Automated Drift Check)
+- [ ] **Task 6.2**: [Step 12] Audit Code vs Spec (Automated Drift Check)
   - Action: Verify OpenAPI schema matches `spec.md` definitions
   - Action: Compare response structures against Spec examples
   - Constraint: Drift rate must be < 1% (field names, types, required status)
@@ -153,12 +176,11 @@
 | Phase 0 | Step 1 | ✅ Done | Tech Stack & Infrastructure |
 | Phase 1 | Steps 2-4 | ✅ Done | Proposal & Spec |
 | Phase 2 | Step 5 | ✅ Done | Design Split |
-| Phase 3 | Steps 6-7 | ⏳ Pending | Frontend Mock Dev |
-| Phase 4 | Step 8 | ⏳ Pending | Backend Skeleton |
-| Phase 5 | Step 9 | ⏳ Pending | Contract Testing |
-| Phase 6 | Step 10 | ⏳ Pending | Implementation |
-| Phase 7 | Steps 11-12 | ⏳ Pending | Verification |
-| Phase 8 | Step 13 | ⏳ Pending | Archive |
+| Phase 3 | Steps 6-7 | ⏳ Pending | Frontend Mock Dev + Test |
+| Phase 4 | Step 8 | ⏳ Pending | Backend Skeleton + Contract Test |
+| Phase 5 | Step 10 | ⏳ Pending | Implementation + Unit/Integration Tests |
+| Phase 6 | Steps 11-12 | ⏳ Pending | Final Verification |
+| Phase 7 | Step 13 | ⏳ Pending | Archive |
 
 ---
 
@@ -169,12 +191,13 @@
 ### Mode-Specific Task Status:
 
 **If frontend-only**:
-- Phase 4 (Task 4.1): Skip
-- Phase 6 (Task 6.1, 6.2): Skip
+- Phase 4 (Task 4.1, 4.2): Skip
+- Phase 5 (Task 5.1-5.4): Skip
+- Phase 5 (Task 5.6): Skip (integration test)
 
 **If backend-only**:
 - Phase 3 (Task 3.1, 3.2): Skip
-- Phase 6 (Task 6.3): Skip
+- Phase 5 (Task 5.5, 5.6): Skip (frontend integration)
 
 **If fullstack**:
 - All tasks required
