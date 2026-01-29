@@ -85,7 +85,11 @@ dev_mode: fullstack  # Options: fullstack, frontend-only, backend-only, middlewa
 
 ### 5. Optional: Generate Infrastructure Spec
 
-For new projects, generate infrastructure spec first:
+**方式一：在项目初始化时生成（推荐）**
+
+使用 `/opsx:init-project` 或 `./scripts/init-project.sh` 时，会询问是否生成 `infrastructure.md`。
+
+**方式二：单独生成**
 
 ```bash
 # In Cursor
@@ -96,7 +100,15 @@ For new projects, generate infrastructure spec first:
 # - Error handling and error code definitions
 # - Request/response format standards
 # - Middleware architecture patterns
-# - Console output formats
+# - Development mode configuration
+```
+
+**方式三：从模板手动创建**
+
+```bash
+cd openspec/context/
+cp infrastructure.template.md infrastructure.md
+# 然后编辑 infrastructure.md，替换 {{ PROJECT_NAME }} 等占位符
 ```
 
 ### 6. Start Using

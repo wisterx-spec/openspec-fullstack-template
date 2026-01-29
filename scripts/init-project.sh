@@ -72,6 +72,23 @@ if [ ! -f "$CONTEXT_DIR/tech_stack.md" ]; then
     cp "$TEMPLATE_DIR/tech_stack.template.md" "$CONTEXT_DIR/tech_stack.md"
 fi
 
+# 询问是否生成 infrastructure.md
+if [ ! -f "$CONTEXT_DIR/infrastructure.md" ] && [ -f "$TEMPLATE_DIR/infrastructure.template.md" ]; then
+    echo ""
+    read -p "是否现在生成 infrastructure.md（基础设施规范）？(y/N): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "${GREEN}📄 正在生成 infrastructure.md...${NC}"
+        sed "s/{{ PROJECT_NAME }}/$PROJECT_NAME/g" \
+            "$TEMPLATE_DIR/infrastructure.template.md" | \
+            sed "s/{{ SERVICE_NAME }}/$PROJECT_NAME/g" > \
+            "$CONTEXT_DIR/infrastructure.md"
+        echo -e "${GREEN}✅ infrastructure.md 已生成${NC}"
+    else
+        echo -e "${BLUE}💡 提示：你可以稍后使用 /opsx:new infrastructure 来生成基础设施规范${NC}"
+    fi
+fi
+
 # 更新 config.yaml（如果存在）
 if [ -f "openspec/config.yaml" ]; then
     echo -e "${GREEN}⚙️  正在更新 config.yaml...${NC}"
@@ -90,6 +107,11 @@ echo ""
 echo -e "${BLUE}📋 下一步：${NC}"
 echo "1. 编辑 openspec/context/project_summary.md 补充详细信息"
 echo "2. 编辑 openspec/context/tech_stack.md 填写技术栈详情"
-echo "3. 在 Cursor 中运行: /opsx:new infrastructure (可选，生成基础设施规范)"
-echo "4. 开始开发: /opsx:new <功能名>"
+if [ ! -f "$CONTEXT_DIR/infrastructure.md" ]; then
+    echo "3. 在 Cursor 中运行: /opsx:new infrastructure (可选，生成基础设施规范)"
+    echo "4. 开始开发: /opsx:new <功能名>"
+else
+    echo "3. 编辑 openspec/context/infrastructure.md 完善基础设施规范（如需要）"
+    echo "4. 开始开发: /opsx:new <功能名>"
+fi
 echo ""

@@ -4,14 +4,15 @@
 
 Use this skill when the user wants to:
 - Initialize or create `project_summary.md` for a new project
-- Set up project context files (`project_summary.md`, `tech_stack.md`)
+- Set up project context files (`project_summary.md`, `tech_stack.md`, `infrastructure.md`)
 - Configure OpenSpec for the first time in a project
+- Generate infrastructure specification
 
 ## What this skill does
 
-1. **Checks existing files**: Detects if `project_summary.md` or `tech_stack.md` already exist
+1. **Checks existing files**: Detects if `project_summary.md`, `tech_stack.md`, or `infrastructure.md` already exist
 2. **Interactive setup**: Guides the user through filling in project information
-3. **Auto-generates files**: Creates `project_summary.md` and `tech_stack.md` from templates
+3. **Auto-generates files**: Creates `project_summary.md`, `tech_stack.md`, and optionally `infrastructure.md` from templates
 4. **Updates config**: Automatically updates `openspec/config.yaml` with project name
 
 ## Workflow
@@ -20,12 +21,12 @@ Use this skill when the user wants to:
 
 ```bash
 # Check if context files exist
-ls -la openspec/context/project_summary.md openspec/context/tech_stack.md 2>/dev/null || echo "Files not found"
+ls -la openspec/context/project_summary.md openspec/context/tech_stack.md openspec/context/infrastructure.md 2>/dev/null || echo "Files not found"
 ```
 
 ### Step 2: Read Template Files
 
-Read `openspec/context/project_summary.template.md` and `openspec/context/tech_stack.template.md` to understand the structure.
+Read `openspec/context/project_summary.template.md`, `openspec/context/tech_stack.template.md`, and `openspec/context/infrastructure.template.md` (if exists) to understand the structure.
 
 ### Step 3: Interactive Information Gathering
 
@@ -55,7 +56,8 @@ Ask the user for the following information (in a friendly, conversational way):
 2. Replace placeholders with user-provided information
 3. Create `openspec/context/project_summary.md`
 4. Create `openspec/context/tech_stack.md` (can use simpler format if user provides tech stack info)
-5. Update `openspec/config.yaml` to replace `{{ PROJECT_NAME }}` with actual project name
+5. **Optionally create `infrastructure.md`**: Ask user if they want to generate infrastructure spec now, or skip it (can be generated later with `/opsx:new infrastructure`)
+6. Update `openspec/config.yaml` to replace `{{ PROJECT_NAME }}` with actual project name
 
 ### Step 5: Verify and Confirm
 
@@ -117,6 +119,13 @@ The `tech_stack.md` should include:
 - Detailed tech stack information
 - Version numbers
 - Key dependencies
+
+The `infrastructure.md` (if generated) should include:
+- Logging system specification
+- Error handling and error code definitions
+- Request/response format standards
+- Middleware architecture patterns
+- Development mode configuration
 
 ## Error Handling
 
