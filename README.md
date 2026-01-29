@@ -37,6 +37,26 @@ cp -r openspec-fullstack-template/skills/ your-project/.cursor/skills/
 
 ### 3. Initialize Project Context
 
+**方式一：使用交互式脚本（推荐）**
+
+```bash
+cd your-project
+./scripts/init-project.sh
+```
+
+脚本会引导你填写项目信息，自动生成 `project_summary.md` 和 `tech_stack.md`。
+
+**方式二：使用 Cursor Skill（最友好）**
+
+在 Cursor 中直接运行：
+```
+/opsx:init-project
+```
+
+AI 会交互式引导你填写信息，自动生成所有必要的文件。
+
+**方式三：手动初始化**
+
 ```bash
 cd your-project/openspec/context/
 
@@ -49,7 +69,7 @@ mv tech_stack.template.md tech_stack.md
 
 ### 4. Update Configuration
 
-Edit `openspec/config.yaml`, replace `{{ PROJECT_NAME }}` with your project name.
+如果使用方式一或方式二，`config.yaml` 会自动更新。否则，手动编辑 `openspec/config.yaml`，替换 `{{ PROJECT_NAME }}` 为你的项目名。
 
 **Optional: Configure Development Mode**
 
@@ -132,7 +152,9 @@ openspec-fullstack-template/
 │   ├── openspec-onboard/         # Onboarding guide
 │   └── openspec-sync-specs/      # Sync specs
 │
-├── init.sh                       # Initialization script (optional)
+├── scripts/
+│   └── init-project.sh          # Friendly project initialization script
+├── init.sh                       # Full initialization script (optional)
 ├── validate.sh                   # Validation script (15 checks)
 └── README.md                     # This document
 ```
