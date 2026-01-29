@@ -248,35 +248,45 @@ artifacts:
         - Target: [specific router files]
         - Constraint: Return Static JSON from spec.md. NO DB CONNECTION.
         - Action: Implement middleware integration
-      
-      ## Phase 5: Contract Testing (Step 9)
-      - [ ] **Task 5.1**: [Step 9] Run E2E Tests (Mock Mode)
+      - [ ] **Task 4.2**: [Step 8] Test Backend Skeleton (Contract Testing)
+        - Action: Write tests to verify the Skeleton API
         - Action: Verify response format matches spec.md
-        - Action: Test error responses and error codes
+        - **Important**: Run tests immediately after Task 4.1, don't wait
       
-      ## Phase 6: Implementation (Step 10)
-      - [ ] **Task 6.1**: [Step 10] Database Models & Migrations
+      ## Phase 5: Implementation (Step 10)
+      - [ ] **Task 5.1**: [Step 10] Database Models & Migrations
         - Action: Create migration for tables: [specific tables]
         - Action: Generate Seed Data from spec.md JSON
-      - [ ] **Task 6.2**: [Step 10] Implement Service Logic
+      - [ ] **Task 5.2**: [Step 10] Test Database Migrations
+        - Action: Run migration tests
+        - **Important**: Test immediately after Task 5.1, catch issues early
+      - [ ] **Task 5.3**: [Step 10] Implement Service Logic
         - Action: Implement business logic in [specific services]
         - Constraint: Include Structured Logging (trace_id, duration_ms)
-      - [ ] **Task 6.3**: [Step 10] Connect Frontend to Real Backend
+      - [ ] **Task 5.4**: [Step 10] Test Service Logic (Unit Tests)
+        - Action: Write unit tests for service methods
+        - **Important**: Test immediately after Task 5.3, catch logic errors early
+      - [ ] **Task 5.5**: [Step 10] Connect Frontend to Real Backend
+      - [ ] **Task 5.6**: [Step 10] Test Frontend-Backend Integration
+        - Action: Run integration tests
+        - **Important**: Test immediately after Task 5.5, catch integration issues early
       
-      ## Phase 7: Real Verification (Steps 11-12)
-      - [ ] **Task 7.1**: [Step 11] Run Tests (Real DB)
-      - [ ] **Task 7.2**: [Step 12] Audit Code vs Spec (Drift Check)
+      ## Phase 6: Final Verification (Steps 11-12)
+      - [ ] **Task 6.1**: [Step 11] Run Full Test Suite
+        - Action: Execute all tests with test database
+        - **Note**: Final comprehensive check, individual tests should have been run in previous phases
+      - [ ] **Task 6.2**: [Step 12] Audit Code vs Spec (Drift Check)
         - Constraint: Drift rate < 1%
       
-      ## Phase 8: Archive (Step 13)
-      - [ ] **Task 8.1**: [Step 13] Prepare Archive
+      ## Phase 7: Archive (Step 13)
+      - [ ] **Task 7.1**: [Step 13] Prepare Archive
         - Action: Run `openspec archive`
       
       ## Progress Summary
       | Phase | Status |
       |-------|--------|
       | Phase 0-2 | ✅ Done |
-      | Phase 3-8 | ⏳ Pending |
+      | Phase 3-6 | ⏳ Pending |
       ```
       
       **Adapt based on dev_mode**:
