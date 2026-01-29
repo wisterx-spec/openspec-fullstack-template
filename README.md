@@ -399,6 +399,7 @@ See [TESTING.md](TESTING.md) for detailed testing guide.
 
 ## 📚 Resources
 
+- [13-Step Workflow Details](13_STEP_WORKFLOW.md) - 详细的13步工作流说明
 - [OpenSpec Documentation](https://github.com/anthropics/openspec)
 - [Cursor Skills Documentation](https://cursor.sh/docs)
 - [Testing Guide](TESTING.md)
