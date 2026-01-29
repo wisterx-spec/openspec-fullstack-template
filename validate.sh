@@ -10,7 +10,7 @@ echo "╚═══════════════════════�
 echo ""
 
 PASS_COUNT=0
-TOTAL_CHECKS=15
+TOTAL_CHECKS=16
 ERRORS=()
 
 add_error() {
@@ -64,12 +64,13 @@ fi
 # Check 4: Context template files
 echo "✓ Check 4/$TOTAL_CHECKS: Verify context template files"
 if [ -f "openspec/context/project_summary.template.md" ] && \
-   [ -f "openspec/context/tech_stack.template.md" ]; then
+   [ -f "openspec/context/tech_stack.template.md" ] && \
+   [ -f "openspec/context/infrastructure.template.md" ]; then
     echo "  ✓ PASS"
     ((PASS_COUNT++))
 else
     echo "  ✗ FAIL"
-    add_error "Missing context template files"
+    add_error "Missing context template files (project_summary, tech_stack, or infrastructure)"
 fi
 
 # Check 5: 13-step workflow in schema
@@ -189,6 +190,16 @@ if [ -d "skills" ] && [ "$(ls -A skills 2>/dev/null)" ]; then
 else
     echo "  ✗ FAIL"
     add_error "skills directory missing or empty"
+fi
+
+# Check 16: Init project script
+echo "✓ Check 16/$TOTAL_CHECKS: Verify init-project script"
+if [ -f "scripts/init-project.sh" ] && [ -x "scripts/init-project.sh" ]; then
+    echo "  ✓ PASS"
+    ((PASS_COUNT++))
+else
+    echo "  ✗ FAIL"
+    add_error "scripts/init-project.sh missing or not executable"
 fi
 
 echo ""

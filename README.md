@@ -381,14 +381,36 @@ global_context:
   - "context/custom_context.md"  # Custom context
 ```
 
+## 🧪 Testing
+
+Run the validation script to verify the template is properly configured:
+
+```bash
+./validate.sh
+```
+
+This runs 16 validation checks including:
+- Directory structure
+- Template files completeness
+- Configuration correctness
+- 13-step workflow structure
+
+See [TESTING.md](TESTING.md) for detailed testing guide.
+
 ## 📚 Resources
 
 - [OpenSpec Documentation](https://github.com/anthropics/openspec)
 - [Cursor Skills Documentation](https://cursor.sh/docs)
+- [Testing Guide](TESTING.md)
 
 ## 🤝 Contributing
 
 Issues and Pull Requests are welcome!
+
+Before submitting:
+1. Run `./validate.sh` to ensure all checks pass
+2. Test initialization with `./init.sh TestProject /tmp/test fullstack`
+3. Update documentation if needed
 
 ## 📄 License
 
