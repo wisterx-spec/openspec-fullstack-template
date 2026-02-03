@@ -10,7 +10,7 @@ echo "╚═══════════════════════�
 echo ""
 
 PASS_COUNT=0
-TOTAL_CHECKS=16
+TOTAL_CHECKS=17
 ERRORS=()
 
 add_error() {
@@ -200,6 +200,16 @@ if [ -f "scripts/init-project.sh" ] && [ -x "scripts/init-project.sh" ]; then
 else
     echo "  ✗ FAIL"
     add_error "scripts/init-project.sh missing or not executable"
+fi
+
+# Check 17: E2E/contract testing in workflow
+echo "✓ Check 17/$TOTAL_CHECKS: Verify E2E/contract testing in workflow"
+if grep -qE "Contract Testing|end-to-end|E2E" openspec/schemas/workflow/templates/tasks.md 2>/dev/null; then
+    echo "  ✓ PASS (E2E/contract testing tasks present)"
+    ((PASS_COUNT++))
+else
+    echo "  ✗ FAIL"
+    add_error "tasks.md missing E2E/contract testing references"
 fi
 
 echo ""

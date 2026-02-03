@@ -21,6 +21,8 @@
 
 ## 3. User Stories
 
+**Traceability**: In `spec.md`, each acceptance criterion below should have a corresponding API or behavior (for alignment and fewer late changes).
+
 ### Story 1: <!-- Title -->
 **As a** <!-- user type -->
 **I want to** <!-- action -->
@@ -72,6 +74,13 @@
 
 - [ ] No breaking changes
 - [ ] **BREAKING**: <!-- Description of breaking change -->
+
+### 5.3 Non-Functional Requirements (Optional)
+<!-- If applicable: performance, rate limiting, security, compatibility -->
+
+- **Performance**: <!-- e.g. response time, throughput -->
+- **Rate limiting / Security**: <!-- if applicable -->
+- **Compatibility**: <!-- API versioning, backward compatibility -->
 
 ---
 

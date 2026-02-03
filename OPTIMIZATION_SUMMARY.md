@@ -2,7 +2,7 @@
 
 ## Optimization Goals
 
-Self-optimization of OpenSpec Fullstack Template through Ralph Loop with requirements:
+Optimization of OpenSpec Fullstack Template with requirements:
 1. Enhance general capabilities
 2. Keep 13-step workflow core unchanged
 3. Support independent development modes (frontend/backend/middleware)
@@ -221,7 +221,7 @@ This optimization successfully achieved the following goals:
 ## Optimization Details
 
 **Optimization Completion Date**: 2024-01-28
-**Optimization Method**: Ralph Loop self-iteration (3 iterations)
+**Optimization Method**: Iterative optimization
 **Validation Status**: ✅ All passed (15/15 checks)
 
 **Quality Assurance**:

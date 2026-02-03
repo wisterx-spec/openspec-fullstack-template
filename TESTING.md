@@ -1,137 +1,124 @@
-# 测试指南
+# Testing Guide
 
-本文档说明如何测试 OpenSpec Fullstack Template 项目。
+This document describes how to test the OpenSpec Fullstack Template project.
 
-## 快速测试
+## Quick Tests
 
-### 1. 运行验证脚本
+### 1. Run Validation Script
 
 ```bash
 ./validate.sh
 ```
 
-这会运行 16 项检查，验证：
-- ✅ 目录结构完整性
-- ✅ 核心配置文件存在
-- ✅ 所有模板文件存在
-- ✅ 上下文模板文件（包括 infrastructure.template.md）
-- ✅ 13 步工作流结构
-- ✅ Schema 配置正确性
-- ✅ 初始化脚本可执行性
+This runs 17 checks, including:
+- Directory structure
+- Core configuration files
+- All template files
+- Context template files (including infrastructure.template.md)
+- 13-step workflow structure
+- Schema configuration
+- Executable init scripts
+- **E2E/contract testing** presence in workflow tasks (see below)
 
-**预期结果**：所有 16 项检查都应该通过 ✅
+**Expected**: All 17 checks should pass.
 
-### 2. 测试初始化脚本
+### Where Are E2E / Contract Tests?
 
-#### 测试完整初始化脚本
+This template is a **workflow template** and does not include application e2e test code. E2E and contract testing are defined in the **task list** and executed in your project:
+
+| Location | Description |
+|----------|-------------|
+| **Task 4.2** (Phase 4, Step 8) | **Backend contract testing**: After skeleton API is done, verify response format matches `spec.md`, StandardResp, error codes, and trace_id. |
+| **Task 5.6** (Phase 5, Step 10) | **Frontend-backend integration / E2E**: After connecting frontend to backend, run integration tests covering full user flows (end-to-end). |
+
+**Check 17** in `./validate.sh` ensures `tasks.md` contains "Contract Testing" or "end-to-end"/"E2E". Add concrete e2e tests (e.g. Playwright/Cypress) in your project per Task 4.2 / Task 5.6.
+
+### 2. Test Init Scripts
+
+#### Full init script
 
 ```bash
-# 创建临时测试目录
 mkdir -p /tmp/test-openspec-project
 cd /tmp/test-openspec-project
 
-# 运行初始化脚本
 /path/to/openspec-fullstack-template/init.sh TestProject . fullstack
 
-# 验证生成的文件
 ls -la openspec/context/
-# 应该看到：project_summary.md, tech_stack.md
+# Expect: project_summary.md, tech_stack.md
 
-# 验证配置
 grep "TestProject" openspec/config.yaml
 ```
 
-#### 测试友好初始化脚本
+#### Interactive init script
 
 ```bash
-# 在模板目录下
 cd openspec-fullstack-template
 
-# 创建测试目录
 mkdir -p /tmp/test-init-project
 cd /tmp/test-init-project
 
-# 复制必要的目录结构
 mkdir -p openspec/context
 cp -r /path/to/openspec-fullstack-template/openspec/context/*.template.md openspec/context/
 
-# 运行脚本（交互式）
 /path/to/openspec-fullstack-template/scripts/init-project.sh
-# 按提示输入项目信息，选择是否生成 infrastructure.md
+# Follow prompts; choose whether to generate infrastructure.md
 ```
 
-### 3. 测试 Cursor Skills
+### 3. Test Cursor Skills
 
-在 Cursor 中测试以下命令：
+In Cursor, run:
 
 ```bash
-# 1. 项目初始化
 /opsx:init-project
-
-# 2. 创建新变更
 /opsx:new test-feature
-
-# 3. 检查开发规范
 /opsx:check-standards
-
-# 4. 新手引导
 /opsx:onboard
 ```
 
-## 详细测试清单
+## Detailed Test Checklist
 
-### 模板文件测试
+### Template files
 
 ```bash
-# 检查所有模板文件是否存在
 for file in proposal.md spec.md design.md tasks.md infrastructure.md; do
   test -f "openspec/schemas/workflow/templates/$file" && echo "✓ $file" || echo "✗ $file missing"
 done
 
-# 检查上下文模板文件
 for file in project_summary.template.md tech_stack.template.md infrastructure.template.md; do
   test -f "openspec/context/$file" && echo "✓ $file" || echo "✗ $file missing"
 done
 ```
 
-### 配置文件测试
+### Config files
 
 ```bash
-# 验证 config.yaml 格式
 python3 -c "import yaml; yaml.safe_load(open('openspec/config.yaml'))" && echo "✓ Valid YAML"
-
-# 验证 schema.yaml 格式
 python3 -c "import yaml; yaml.safe_load(open('openspec/schemas/workflow/schema.yaml'))" && echo "✓ Valid YAML"
-
-# 检查必需字段
 grep -q "schema: workflow" openspec/config.yaml && echo "✓ schema field present"
 grep -q "^context:" openspec/config.yaml && echo "✓ context field present"
 grep -q "^rules:" openspec/config.yaml && echo "✓ rules field present"
 ```
 
-### 脚本可执行性测试
+### Script executability
 
 ```bash
-# 检查所有脚本是否可执行
 for script in init.sh validate.sh scripts/init-project.sh; do
-  test -x "$script" && echo "✓ $script is executable" || echo "✗ $script not executable"
+  test -x "$script" && echo "✓ $script executable" || echo "✗ $script not executable"
 done
 ```
 
-### 工作流结构测试
+### Workflow structure
 
 ```bash
-# 验证 13 步工作流结构
 grep -q "13-Step Contract-First" openspec/schemas/workflow/schema.yaml && echo "✓ 13-step workflow found"
 grep -q "Phase 0" openspec/schemas/workflow/templates/tasks.md && echo "✓ Phase 0 found"
 grep -q "Phase 8" openspec/schemas/workflow/templates/tasks.md && echo "✓ Phase 8 found"
 grep -q "Step 13" openspec/schemas/workflow/templates/tasks.md && echo "✓ Step 13 found"
 ```
 
-### Skills 目录测试
+### Skills directory
 
 ```bash
-# 检查所有必需的 skills
 REQUIRED_SKILLS=(
   "openspec-new-change"
   "openspec-continue-change"
@@ -143,50 +130,27 @@ REQUIRED_SKILLS=(
   "openspec-onboard"
   "openspec-init-project"
 )
-
 for skill in "${REQUIRED_SKILLS[@]}"; do
   test -f "skills/$skill/SKILL.md" && echo "✓ $skill" || echo "✗ $skill missing"
 done
 ```
 
-## 集成测试
+## Integration Tests
 
-### 端到端测试流程
+### E2E-style flow
 
-1. **初始化新项目**
-   ```bash
-   ./init.sh E2ETestProject /tmp/e2e-test fullstack
-   ```
+1. Init a project: `./init.sh E2ETestProject /tmp/e2e-test fullstack`
+2. Verify files: `cd /tmp/e2e-test` and check `project_summary.md`, `tech_stack.md`, `config.yaml`
+3. Run interactive init if needed: `scripts/init-project.sh`
+4. Cleanup: `rm -rf /tmp/e2e-test`
 
-2. **验证生成的文件**
-   ```bash
-   cd /tmp/e2e-test
-   test -f openspec/context/project_summary.md && echo "✓ project_summary.md created"
-   test -f openspec/context/tech_stack.md && echo "✓ tech_stack.md created"
-   grep -q "E2ETestProject" openspec/config.yaml && echo "✓ config.yaml updated"
-   ```
+## CI
 
-3. **测试初始化脚本**
-   ```bash
-   cd /tmp/e2e-test
-   # 如果 infrastructure.md 不存在，运行脚本生成
-   /path/to/openspec-fullstack-template/scripts/init-project.sh
-   ```
-
-4. **清理测试环境**
-   ```bash
-   rm -rf /tmp/e2e-test
-   ```
-
-## 持续集成
-
-### GitHub Actions 示例
+### GitHub Actions example
 
 ```yaml
 name: Validate Template
-
 on: [push, pull_request]
-
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -201,42 +165,15 @@ jobs:
           test -f /tmp/test-init/openspec/context/project_summary.md
 ```
 
-## 故障排查
+## Troubleshooting
 
-### 常见问题
+1. **Validation fails (missing files)** – Check paths and permissions.
+2. **Init script fails** – Check target directory permissions and that template files exist.
+3. **Skills not working** – Ensure `skills` is under `.cursor/skills/` and SKILL.md format is correct.
 
-1. **验证失败：缺少文件**
-   - 检查文件是否在正确的位置
-   - 确认文件权限正确
+## Best Practices
 
-2. **初始化脚本失败**
-   - 检查目标目录权限
-   - 确认模板文件存在
-
-3. **Skills 不工作**
-   - 确认 skills 目录在 `.cursor/skills/` 下
-   - 检查 SKILL.md 文件格式
-
-## 测试最佳实践
-
-1. **每次修改后运行验证**
-   ```bash
-   ./validate.sh
-   ```
-
-2. **提交前测试初始化**
-   ```bash
-   ./init.sh TestProject /tmp/test fullstack
-   ```
-
-3. **测试所有开发模式**
-   ```bash
-   for mode in fullstack frontend-only backend-only middleware-only; do
-     ./init.sh TestProject /tmp/test-$mode $mode
-   done
-   ```
-
-4. **验证生成的文件内容**
-   - 检查占位符是否被正确替换
-   - 验证文件格式正确性
-   - 确认所有必需字段都存在
+1. Run `./validate.sh` after changes.
+2. Test init before committing: `./init.sh TestProject /tmp/test fullstack`.
+3. Test all dev modes: fullstack, frontend-only, backend-only, middleware-only.
+4. Verify generated files: placeholders replaced, format and required fields correct.

@@ -1,6 +1,6 @@
 # OpenSpec Fullstack Template
 
-[🇨🇳 中文文档](README_CN.md) | [📖 使用示例](USAGE_EXAMPLES_CN.md) | [📋 优化总结](OPTIMIZATION_SUMMARY_CN.md)
+[Chinese Docs](README_CN.md) | [Usage Examples (CN)](USAGE_EXAMPLES_CN.md) | [Optimization Summary (CN)](OPTIMIZATION_SUMMARY_CN.md)
 
 > 13-Step Contract-First Development Workflow template for fullstack projects. Solves frontend-backend API inconsistency and high integration costs through Spec First, Mock Before Real principles.
 
@@ -37,25 +37,25 @@ cp -r openspec-fullstack-template/skills/ your-project/.cursor/skills/
 
 ### 3. Initialize Project Context
 
-**方式一：使用交互式脚本（推荐）**
+**Option A: Interactive script (recommended)**
 
 ```bash
 cd your-project
 ./scripts/init-project.sh
 ```
 
-脚本会引导你填写项目信息，自动生成 `project_summary.md` 和 `tech_stack.md`。
+The script will prompt you for project info and generate `project_summary.md` and `tech_stack.md`.
 
-**方式二：使用 Cursor Skill（最友好）**
+**Option B: Cursor Skill**
 
-在 Cursor 中直接运行：
+In Cursor, run:
 ```
 /opsx:init-project
 ```
 
-AI 会交互式引导你填写信息，自动生成所有必要的文件。
+The AI will guide you interactively and generate all required files.
 
-**方式三：手动初始化**
+**Option C: Manual**
 
 ```bash
 cd your-project/openspec/context/
@@ -69,7 +69,7 @@ mv tech_stack.template.md tech_stack.md
 
 ### 4. Update Configuration
 
-如果使用方式一或方式二，`config.yaml` 会自动更新。否则，手动编辑 `openspec/config.yaml`，替换 `{{ PROJECT_NAME }}` 为你的项目名。
+If you used Option A or B, `config.yaml` is updated automatically. Otherwise, edit `openspec/config.yaml` and replace `{{ PROJECT_NAME }}` with your project name.
 
 **Optional: Configure Development Mode**
 
@@ -85,11 +85,11 @@ dev_mode: fullstack  # Options: fullstack, frontend-only, backend-only, middlewa
 
 ### 5. Optional: Generate Infrastructure Spec
 
-**方式一：在项目初始化时生成（推荐）**
+**Option A: During project init (recommended)**
 
-使用 `/opsx:init-project` 或 `./scripts/init-project.sh` 时，会询问是否生成 `infrastructure.md`。
+When using `/opsx:init-project` or `./scripts/init-project.sh`, you will be asked whether to generate `infrastructure.md`.
 
-**方式二：单独生成**
+**Option B: Generate separately**
 
 ```bash
 # In Cursor
@@ -103,12 +103,12 @@ dev_mode: fullstack  # Options: fullstack, frontend-only, backend-only, middlewa
 # - Development mode configuration
 ```
 
-**方式三：从模板手动创建**
+**Option C: From template**
 
 ```bash
 cd openspec/context/
 cp infrastructure.template.md infrastructure.md
-# 然后编辑 infrastructure.md，替换 {{ PROJECT_NAME }} 等占位符
+# Then edit infrastructure.md and replace {{ PROJECT_NAME }} and other placeholders
 ```
 
 ### 6. Start Using
@@ -167,7 +167,7 @@ openspec-fullstack-template/
 ├── scripts/
 │   └── init-project.sh          # Friendly project initialization script
 ├── init.sh                       # Full initialization script (optional)
-├── validate.sh                   # Validation script (15 checks)
+├── validate.sh                   # Validation script (17 checks)
 └── README.md                     # This document
 ```
 
@@ -389,7 +389,7 @@ Run the validation script to verify the template is properly configured:
 ./validate.sh
 ```
 
-This runs 16 validation checks including:
+This runs 17 validation checks including:
 - Directory structure
 - Template files completeness
 - Configuration correctness
@@ -399,7 +399,8 @@ See [TESTING.md](TESTING.md) for detailed testing guide.
 
 ## 📚 Resources
 
-- [13-Step Workflow Details](13_STEP_WORKFLOW.md) - 详细的13步工作流说明
+- [13-Step Workflow Details](13_STEP_WORKFLOW.md)
+- [Requirements Alignment](docs/REQUIREMENTS_ALIGNMENT.md) - Assessment and recommendations for aligning requirements and reducing late-stage changes
 - [OpenSpec Documentation](https://github.com/anthropics/openspec)
 - [Cursor Skills Documentation](https://cursor.sh/docs)
 - [Testing Guide](TESTING.md)

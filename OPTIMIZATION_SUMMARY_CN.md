@@ -2,7 +2,7 @@
 
 ## 优化目标
 
-通过 Ralph Loop 对 OpenSpec Fullstack Template 进行自我优化，要求：
+对 OpenSpec Fullstack Template 进行优化，要求：
 1. 增强通用能力
 2. 不改变 13 步工作流核心
 3. 支持独立开发模式（前端/后端/中间件）
@@ -219,14 +219,52 @@
 ---
 
 **优化完成时间**: 2024-01-28
-**优化方式**: Ralph Loop 自我迭代（3 次迭代）
+**优化方式**: 迭代优化
 **验证状态**: ✅ 全部通过（15/15 checks）
 
-**质量保证**:
-- 模板语法：100% 正确
-- 开发模式支持：全部 4 种模式已验证
-- 文件引用：全部一致
-- 模板完整性：所有检查通过
-- 文档完整性：100%
-- 向后兼容性：完全保持
-- 自动化工具：完整
+---
+
+## 后续优化：需求对齐（本版本）
+
+在保持上述成果基础上，本版本新增以下优化。
+
+### ✅ 需求对齐与减少后期修改
+
+**文档**: `docs/REQUIREMENTS_ALIGNMENT.md`
+
+- **评估结论**：13 步工作流已能较大程度对齐需求、减少后期修改；补上追溯与验收标准绑定可进一步强化。
+- **已落实改进**：
+  1. **spec.md**：增加可选小节 **Requirements Traceability**（端点 ↔ User Story/验收标准）。
+  2. **proposal.md**：User Stories 处增加「在 spec.md 中为每个验收标准建立对应 API/行为」的追溯提示；Impact 下增加 **5.3 Non-Functional Requirements（可选）**（性能、限流、安全、兼容性）。
+  3. **design.md**：验证计划中增加 **4.4 Acceptance Criteria Coverage**（每条 AC 对应单元/集成/E2E 覆盖）。
+  4. **schema.yaml**：Spec 的 **Validation Checklist** 标为 MANDATORY before moving to design，并写明流程（写 spec 时逐条勾选、评审确认）；Proposal instruction 中增加对 5.3 非功能要求的引用。
+
+**影响**：Proposal ↔ Spec ↔ Design ↔ 测试 显式追溯，减少漏写、漏测和后期返工。
+
+---
+
+### ✅ E2E/契约测试可见性
+
+- **validate.sh**：新增 **Check 17** — 检查 `tasks.md` 中是否包含 E2E/Contract Testing/end-to-end 表述；总检查数由 16 增至 17。
+- **TESTING.md**：增加「E2E / 契约测试在哪里？」说明（Task 4.2 = 后端契约测试，Task 5.6 = 前后端集成/E2E），并说明 Check 17 的用途。
+
+**影响**：跑 `./validate.sh` 即可看到 E2E/契约测试在工作流中的体现，避免「看不到 e2e 测试」的困惑。
+
+---
+
+### ✅ 验证与文档链接
+
+- **验证状态**：当前为 **17/17** 项检查通过。
+- **README**：增加对 `docs/REQUIREMENTS_ALIGNMENT.md` 的引用。
+
+---
+
+**本版本质量保证**:
+- 需求对齐：Proposal/Spec/Design 追溯与 AC 覆盖已纳入模板与 schema
+- E2E 可见性：validate.sh Check 17 + TESTING.md 说明
+- 验证：17/17 通过
+
+---
+
+**优化完成时间**: 2024-01-28（基础）+ 后续（需求对齐）
+**验证状态**: ✅ 全部通过（17/17 checks）

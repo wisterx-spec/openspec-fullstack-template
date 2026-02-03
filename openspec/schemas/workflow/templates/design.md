@@ -175,6 +175,15 @@ Reference: `infrastructure.md` for standard patterns.
 - [ ] Error codes match infrastructure.md
 - [ ] Pagination format correct
 
+### 4.4 Acceptance Criteria Coverage (Requirements Alignment)
+
+Each acceptance criterion from `proposal.md` should be covered by at least one of: unit test, integration/contract test, or E2E/frontend verification. This reduces late rework by ensuring nothing is missed.
+
+| AC (e.g. Story 1.1) | Covered By (Unit / Integration / E2E) |
+|--------------------|---------------------------------------|
+| <!-- AC-1.1 -->    | <!-- e.g. Integration -->             |
+| <!-- AC-1.2 -->    | <!-- e.g. E2E -->                      |
+
 ---
 
 ## 5. Development Workflow Preview

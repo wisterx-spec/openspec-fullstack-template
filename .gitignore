@@ -14,5 +14,7 @@ openspec/context/tech_stack.md
 # OS
 .DS_Store
 
-# IDE
+# IDE / local
 .cursor/
+.claude/*.local.md
+.claude/settings.local.json

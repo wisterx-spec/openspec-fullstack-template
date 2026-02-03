@@ -5,6 +5,17 @@
 
 ---
 
+## Requirements Traceability (Optional but Recommended)
+
+<!-- Map each endpoint to proposal user stories / acceptance criteria. Reduces late rework by ensuring nothing is missed. -->
+
+| Endpoint / Behavior | User Story | Acceptance Criterion |
+|--------------------|------------|----------------------|
+| `GET /api/v1/...`  | Story 1    | AC-1.1, AC-1.2       |
+| `POST /api/v1/...` | Story 2    | AC-2.1               |
+
+---
+
 ## API Endpoints
 
 ### `GET /api/v1/<!-- resource -->`

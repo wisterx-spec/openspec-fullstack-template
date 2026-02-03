@@ -73,6 +73,7 @@ artifacts:
       5. **Impact**
          - Affected code, APIs, dependencies, or systems
          - Breaking changes (mark with **BREAKING**)
+         - Optional: **Non-Functional Requirements** (template section 5.3) — performance, rate limiting, security, compatibility if applicable
       
       **Language**: Follow project config (zh-CN or en-US)
       **Tech Alignment**: Ensure alignment with context/tech_stack.md
@@ -130,12 +131,14 @@ artifacts:
          - Indexes and constraints
          - Seed data examples from JSON responses
       
-      4. **Validation Checklist**:
+      4. **Validation Checklist** (MANDATORY before moving to design):
          - [ ] All endpoints have JSON request/response examples
          - [ ] All responses follow StandardResp structure
          - [ ] Database tables define necessary indexes
          - [ ] Error codes follow infrastructure.md standards
          - [ ] Logging requirements specified
+         
+         **Process**: Before proceeding to design (Step 5), the spec author MUST complete this checklist: tick each item only after it is satisfied, and confirm during review that all items are checked. This reduces late rework from missing fields, error codes, or pagination.
       
       **Important**: JSON examples will be used for mock data in Phase 3.
     requires:

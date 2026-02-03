@@ -347,6 +347,9 @@ global_context:
 
 ## 📚 相关资源
 
+- [13 步工作流详细说明](13_STEP_WORKFLOW_CN.md)
+- [需求对齐与减少后期修改](docs/REQUIREMENTS_ALIGNMENT_CN.md)
+- [测试指南](TESTING_CN.md)
 - [OpenSpec 文档](https://github.com/anthropics/openspec)
 - [Cursor Skills 文档](https://cursor.sh/docs)
 
