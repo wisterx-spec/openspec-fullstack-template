@@ -227,7 +227,7 @@ Each acceptance criterion from `proposal.md` should be covered by at least one o
 
 - [ ] Use error codes from infrastructure.md
 - [ ] Return StandardResp for all errors
-- [ ] Include error_details with trace_id
+- [ ] Include details with trace_id
 - Reference: `infrastructure.md` Section 2
 
 ### 6.3 Request/Response

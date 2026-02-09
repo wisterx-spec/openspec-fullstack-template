@@ -10,11 +10,11 @@ DEV_MODE="${3:-fullstack}"
 
 # Validate dev_mode
 case "$DEV_MODE" in
-    fullstack|frontend-only|backend-only|middleware-only)
+    fullstack|frontend-only|backend-only|middleware-only|frontend-first-solo)
         ;;
     *)
         echo "Error: Invalid dev_mode '$DEV_MODE'"
-        echo "Valid options: fullstack, frontend-only, backend-only, middleware-only"
+        echo "Valid options: fullstack, frontend-only, backend-only, middleware-only, frontend-first-solo"
         exit 1
         ;;
 esac
@@ -68,6 +68,52 @@ cp -r "$SCRIPT_DIR/skills/"* "$TARGET_DIR/.cursor/skills/"
 touch "$TARGET_DIR/openspec/specs/.gitkeep"
 touch "$TARGET_DIR/openspec/changes/.gitkeep"
 
+# Frontend-First mode: create additional directories and copy files
+if [ "$DEV_MODE" = "frontend-first-solo" ] || [ "$DEV_MODE" = "fullstack" ] || [ "$DEV_MODE" = "frontend-only" ]; then
+    echo "Setting up Frontend-First infrastructure..."
+
+    # Create devtools/mocks directory structure
+    mkdir -p "$TARGET_DIR/devtools/mocks/data"
+    touch "$TARGET_DIR/devtools/mocks/data/.gitkeep"
+
+    # Create design-system directory
+    mkdir -p "$TARGET_DIR/design-system"
+
+    # Copy API convention
+    mkdir -p "$TARGET_DIR/openspec/conventions"
+    cp "$SCRIPT_DIR/openspec/conventions/api-convention.md" "$TARGET_DIR/openspec/conventions/" 2>/dev/null || true
+
+    # Copy Frontend-First specific skills
+    for SKILL in openspec-ff-new openspec-ff-freeze openspec-ff-mock-to-spec openspec-ff-done; do
+        if [ -d "$SCRIPT_DIR/skills/$SKILL" ]; then
+            cp -r "$SCRIPT_DIR/skills/$SKILL" "$TARGET_DIR/.cursor/skills/"
+        fi
+    done
+
+    # Copy Frontend-First agents
+    mkdir -p "$TARGET_DIR/.cursor/agents"
+    for AGENT in ff-verifier ff-contract-tester ff-spec-checker ff-build-checker ff-migrator; do
+        if [ -f "$SCRIPT_DIR/.cursor/agents/$AGENT.md" ]; then
+            cp "$SCRIPT_DIR/.cursor/agents/$AGENT.md" "$TARGET_DIR/.cursor/agents/"
+        fi
+    done
+
+    # Copy Frontend-First scripts
+    for SCRIPT_FILE in ff-compare-mock-spec.js ff-contract-test-runner.js ff-freeze-mock-version.js ff-check-no-mock-in-build.sh; do
+        if [ -f "$SCRIPT_DIR/scripts/$SCRIPT_FILE" ]; then
+            cp "$SCRIPT_DIR/scripts/$SCRIPT_FILE" "$TARGET_DIR/scripts/" 2>/dev/null || {
+                mkdir -p "$TARGET_DIR/scripts"
+                cp "$SCRIPT_DIR/scripts/$SCRIPT_FILE" "$TARGET_DIR/scripts/"
+            }
+        fi
+    done
+    chmod +x "$TARGET_DIR/scripts/ff-check-no-mock-in-build.sh" 2>/dev/null || true
+
+    # Copy workflow documentation
+    cp "$SCRIPT_DIR/FRONTEND_FIRST_WORKFLOW.md" "$TARGET_DIR/" 2>/dev/null || true
+    cp "$SCRIPT_DIR/FRONTEND_FIRST_WORKFLOW_CN.md" "$TARGET_DIR/" 2>/dev/null || true
+fi
+
 # Copy documentation
 echo "Copying documentation..."
 cp "$SCRIPT_DIR/README.md" "$TARGET_DIR/README.openspec.md" 2>/dev/null || true
@@ -103,7 +149,13 @@ case "$DEV_MODE" in
         ;;
     frontend-only)
         echo "   - Frontend development with Mock backend"
-        echo "   - Use /opsx:new to generate specs with mock data"
+        echo "   - Use /opsx:ff-new to create Frontend-First features"
+        ;;
+    frontend-first-solo)
+        echo "   - Solo fullstack, UI-driven development"
+        echo "   - 7-step Frontend-First workflow: UI → Mock → Spec → Backend"
+        echo "   - Use /opsx:ff-new to create features"
+        echo "   - See FRONTEND_FIRST_WORKFLOW.md for full guide"
         ;;
     backend-only)
         echo "   - Backend API development"

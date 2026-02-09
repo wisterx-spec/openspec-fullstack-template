@@ -1,0 +1,31 @@
+id,name,keywords,best_for,performance,accessibility
+1,Minimalism & Swiss Style,"clean, whitespace, grid, simple, functional",Enterprise apps; dashboards; documentation,Excellent,WCAG AAA
+2,Neumorphism,"soft shadows, subtle depth, extruded, inset",Health/wellness apps; meditation platforms,Good,WCAG AA
+3,Glassmorphism,"blur, transparency, frosted glass, layered",Modern SaaS; financial dashboards,Good,WCAG AA
+4,Brutalism,"raw, bold, harsh, unconventional, anti-design",Design portfolios; artistic projects,Excellent,WCAG A
+5,3D & Hyperrealism,"depth, realistic, immersive, volumetric",Gaming; product showcase; immersive experiences,Medium,WCAG A
+6,Vibrant & Block-based,"bold colors, geometric, playful, energetic",Startups; creative agencies; gaming,Excellent,WCAG AA
+7,Dark Mode OLED,"true black, high contrast, energy efficient",Night-mode apps; coding platforms; media,Excellent,WCAG AA
+8,Accessible & Ethical,"inclusive, readable, clear, universal",Government; healthcare; education,Excellent,WCAG AAA
+9,Claymorphism,"soft 3d, clay-like, rounded, friendly",Educational apps; children's apps; SaaS,Good,WCAG AA
+10,Aurora UI,"gradient mesh, flowing colors, dynamic",Modern SaaS; creative agencies,Good,WCAG AA
+11,Retro-Futurism,"neon, synthwave, cyberpunk, vintage future",Gaming; entertainment; music platforms,Medium,WCAG A
+12,Flat Design,"simple, 2d, minimal shadows, clean icons",Web apps; mobile apps; startup MVPs,Excellent,WCAG AA
+13,Skeuomorphism,"realistic textures, physical metaphors, detailed",Legacy apps; gaming; premium products,Medium,WCAG A
+14,Liquid Glass,"fluid, reflective, premium, sophisticated",Premium SaaS; high-end e-commerce,Medium,WCAG AA
+15,Motion-Driven,"animated, kinetic, scroll-triggered, dynamic",Portfolio sites; storytelling platforms,Medium,WCAG A
+16,Micro-interactions,"subtle feedback, delightful, responsive",Mobile apps; touchscreen UIs,Good,WCAG AA
+17,Inclusive Design,"universal, adaptable, multi-modal",Public services; education; healthcare,Excellent,WCAG AAA
+18,Zero Interface,"voice-first, invisible, ambient, conversational",Voice assistants; AI platforms,N/A,WCAG AAA
+19,Soft UI Evolution,"soft shadows, subtle depth, calming, premium feel, organic shapes",Wellness; beauty; lifestyle brands; premium services,Excellent,WCAG AA
+20,Neubrutalism,"bold borders, raw, Figma-style, stark colors",Gen Z brands; startups; creative tools,Excellent,WCAG AA
+21,Bento Box Grid,"modular, organized, card-based, flexible",Dashboards; product pages; portfolios,Excellent,WCAG AA
+22,Y2K Aesthetic,"glossy, futuristic retro, metallic, playful",Fashion brands; music; Gen Z marketing,Medium,WCAG A
+23,Cyberpunk UI,"neon, dark, techy, futuristic, glitch",Gaming; tech products; crypto apps,Medium,WCAG A
+24,Organic Biophilic,"natural, earthy, flowing, sustainable",Wellness apps; sustainability brands,Good,WCAG AA
+25,AI-Native UI,"conversational, adaptive, intelligent, assistant-like",AI products; chatbots; copilots,Good,WCAG AA
+26,Memphis Design,"geometric, colorful, playful, 80s inspired",Creative agencies; music; youth brands,Good,WCAG A
+27,Vaporwave,"pink-purple gradient, nostalgic, dreamy, surreal",Music platforms; gaming; portfolios,Medium,WCAG A
+28,Dimensional Layering,"stacked, depth, elevation, card hierarchy",Dashboards; card layouts; modals,Good,WCAG AA
+29,Editorial Grid,"magazine-style, typography-focused, structured",News sites; blogs; magazines,Excellent,WCAG AA
+30,Swiss Modernism 2.0,"grid, typography, structured, refined",Corporate sites; architecture; editorial,Excellent,WCAG AAA

@@ -1,0 +1,21 @@
+id,name,industry,primary,secondary,cta,background,text,mood
+1,SaaS Professional,SaaS,#4F46E5,#818CF8,#10B981,#F9FAFB,#111827,Trust; professional; modern
+2,Fintech Trust,Fintech,#0D9488,#2DD4BF,#F59E0B,#F0FDFA,#134E4A,Secure; reliable; growth
+3,Healthcare Calm,Healthcare,#0EA5E9,#7DD3FC,#22C55E,#F0F9FF,#0C4A6E,Calm; trustworthy; clean
+4,E-commerce Vibrant,E-commerce,#EC4899,#F472B6,#F97316,#FDF2F8,#831843,Energetic; exciting; conversion
+5,Education Friendly,Education,#8B5CF6,#A78BFA,#10B981,#FAF5FF,#581C87,Approachable; engaging; growth
+6,Beauty & Spa,Beauty/Wellness,#E8B4B8,#A8D5BA,#D4AF37,#FFF5F5,#2D3436,Calming; luxurious; premium
+7,Legal Professional,Legal,#1E3A5F,#4A6FA5,#C9A227,#F8FAFC,#1E293B,Authoritative; trustworthy; elegant
+8,Restaurant Warm,Restaurant,#DC2626,#FBBF24,#15803D,#FFFBEB,#7C2D12,Appetizing; warm; inviting
+9,Real Estate Trust,Real Estate,#1D4ED8,#60A5FA,#059669,#EFF6FF,#1E3A8A,Professional; stable; trustworthy
+10,Gaming Neon,Gaming,#A855F7,#22D3EE,#F43F5E,#0F0F23,#E2E8F0,Exciting; immersive; dynamic
+11,Crypto Dark,Crypto/Web3,#8B5CF6,#06B6D4,#F59E0B,#0D0D0D,#F4F4F5,Futuristic; innovative; bold
+12,Sustainability Green,Sustainability,#059669,#34D399,#F59E0B,#ECFDF5,#064E3B,Natural; eco; responsible
+13,Luxury Minimal,Luxury,#000000,#737373,#B8860B,#FFFFFF,#171717,Elegant; premium; sophisticated
+14,Startup Bold,Startup,#7C3AED,#C084FC,#F97316,#FAFAFA,#18181B,Innovative; energetic; disruptive
+15,Enterprise Blue,Enterprise,#1E40AF,#3B82F6,#16A34A,#F8FAFC,#1E293B,Corporate; reliable; scalable
+16,Creative Agency,Creative,#F43F5E,#FB923C,#8B5CF6,#FAFAFA,#171717,Bold; creative; expressive
+17,Mental Health,Mental Health,#6366F1,#A5B4FC,#34D399,#F5F3FF,#312E81,Soothing; supportive; safe
+18,Fitness Energy,Fitness,#EF4444,#FCA5A5,#22C55E,#FEF2F2,#7F1D1D,Energetic; motivating; powerful
+19,Travel Adventure,Travel,#0891B2,#67E8F9,#F97316,#ECFEFF,#164E63,Adventurous; inspiring; exciting
+20,Food Delivery,Food Delivery,#EA580C,#FDBA74,#16A34A,#FFF7ED,#7C2D12,Fresh; fast; appetizing

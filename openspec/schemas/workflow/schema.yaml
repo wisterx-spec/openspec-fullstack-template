@@ -1,6 +1,6 @@
 name: workflow
 version: 1
-description: "13-Step Contract-First Development Workflow"
+description: "Development Workflow (13-Step Spec-First / 7-Step Frontend-First)"
 
 artifacts:
   # --- Phase 0: Infrastructure (Optional, for new projects) ---
@@ -24,7 +24,7 @@ artifacts:
       2. **Error Handling System**
          - Error code structure and categories (1xxx-5xxx)
          - Standard error codes table
-         - Error response format with error_details
+         - Error response format with details
       
       3. **Request/Response Format**
          - StandardResp structure: `{code, message, data}`
@@ -115,10 +115,10 @@ artifacts:
          **Response** (Error):
          ```json
          {
-           "code": 1000,
-           "message": "Invalid Parameter",
+           "code": 100001,
+           "message": "Missing Required Parameter",
            "data": null,
-           "error_details": { "field": "xxx", "reason": "xxx", "trace_id": "uuid" }
+           "details": { "field": "xxx", "reason": "xxx", "trace_id": "uuid" }
          }
          ```
          
@@ -206,10 +206,12 @@ artifacts:
   # --- Phase 3-8: Task Breakdown ---
   - id: tasks
     generates: tasks.md
-    description: "Phase 3-8: Implementation & Verification Steps (13-Step Workflow)"
+    description: "Phase 3-8: Implementation & Verification Steps"
     template: tasks.md
     instruction: |
-      Generate the task breakdown following the **13-Step Contract-First Workflow**.
+      Generate the task breakdown following the active workflow mode.
+      If dev_mode is frontend-first-solo, follow the **7-Step Frontend-First Workflow** (see FRONTEND_FIRST_WORKFLOW.md).
+      Otherwise, follow the **13-Step Contract-First Workflow** (see 13_STEP_WORKFLOW.md).
       
       **CRITICAL**: Do not use generic descriptions. Replace with SPECIFIC:
       - File paths (e.g., `src/components/UserList.tsx`)
@@ -306,7 +308,7 @@ apply:
   requires: [tasks]
   tracks: tasks.md
   instruction: |
-    Execute the 13-Step Contract-First Workflow tasks.
+    Execute the workflow tasks per the active mode (13-Step Spec-First or 7-Step Frontend-First).
     
     **Workflow**:
     1. Read all context files (proposal.md, spec.md, design.md, tasks.md)

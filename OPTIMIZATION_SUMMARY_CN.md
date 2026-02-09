@@ -268,3 +268,65 @@
 
 **优化完成时间**: 2024-01-28（基础）+ 后续（需求对齐）
 **验证状态**: ✅ 全部通过（17/17 checks）
+
+---
+
+## Frontend-First 工作流集成（本次发布）
+
+### ✅ 7. Frontend-First Solo 开发工作流
+
+新增完整的 7 步 UI 驱动工作流，作为现有 13 步 Spec-First 流程的替代方案。
+
+**新增文件**：
+
+| 文件 | 用途 |
+|------|------|
+| `FRONTEND_FIRST_WORKFLOW.md` | 完整 7 步工作流指南 |
+| `FRONTEND_FIRST_WORKFLOW_CN.md` | 完整 7 步工作流指南（中文） |
+| `openspec/conventions/api-convention.md` | API 格式、错误码、分页的唯一约束源 |
+| `skills/openspec-ff-new/SKILL.md` | 创建新 Frontend-First 功能（Step 1+2） |
+| `skills/openspec-ff-freeze/SKILL.md` | 冻结 UI 和 Mock 数据（Step 3） |
+| `skills/openspec-ff-mock-to-spec/SKILL.md` | 从 Mock 数据反推 API Spec（Step 4） |
+| `skills/openspec-ff-done/SKILL.md` | 集成与归档（Step 7） |
+| `scripts/ff-compare-mock-spec.js` | Mock 与 Spec 字段级对比工具 |
+| `scripts/ff-contract-test-runner.js` | 契约测试运行器 |
+| `scripts/ff-freeze-mock-version.js` | Mock 数据版本快照工具 |
+| `scripts/ff-check-no-mock-in-build.sh` | 生产构建 Mock 泄漏检查器 |
+| `.cursor/agents/ff-verifier.md` | 三方一致性检查 Subagent |
+| `.cursor/agents/ff-contract-tester.md` | 契约测试分析 Subagent |
+| `.cursor/agents/ff-spec-checker.md` | Mock ↔ Spec 对比 Subagent |
+| `.cursor/agents/ff-build-checker.md` | 构建 Mock 泄漏检查 Subagent |
+| `.cursor/agents/ff-migrator.md` | 已有项目 Mock 迁移扫描 Subagent |
+
+**修改文件**：
+
+| 文件 | 变更 |
+|------|------|
+| `README.md` | 新增 Frontend-First 模式说明、命令、目录结构 |
+| `README_CN.md` | 新增 Frontend-First 模式说明（中文） |
+| `openspec/config.yaml` | 新增 `frontend-first-solo` dev_mode + `frontend_first_solo` 配置块 |
+| `init.sh` | 新增 `frontend-first-solo` 模式，自动创建 devtools/mocks + 复制 ff-* 文件 |
+| `scripts/init-project.sh` | 新增 Frontend-First 工作流启用提示 |
+| `validate.sh` | 修复预存 bash bug（`((0++))` + `set -e`） |
+| 模板文件 | 统一为 6 位错误码、扁平分页、`details` 字段 |
+
+### ✅ 8. API 接口规范统一
+
+- 创建 `openspec/conventions/api-convention.md` 作为所有 API 规则的唯一定义：
+  - 响应信封：`{ code, message, data }`
+  - 6 位错误码（CCMMSS 格式）
+  - 扁平分页：`{ items, total, page, page_size }`
+  - 字段命名：JSON 用 `snake_case`，URL 用 `kebab-case`
+  - ISO 8601 日期格式
+- 更新所有模板文件与规范一致
+
+### 影响
+
+- **个人全栈开发者**：完整的 UI 优先工作流，包含 Mock 隔离、契约测试
+- **现有 13 步用户**：无破坏性变更；Frontend-First 通过 `dev_mode` 选择启用
+- **新项目**：`init.sh` 和 `init-project.sh` 自动配置 Frontend-First 基础设施
+
+---
+
+**发布日期**: 2026-02-04
+**验证状态**: ✅ 全部通过（17/17 checks）

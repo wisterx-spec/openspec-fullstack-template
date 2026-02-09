@@ -29,7 +29,7 @@ for dir in "${REQUIRED_DIRS[@]}"; do
 done
 if [ "$DIR_CHECK" = true ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
 fi
@@ -38,7 +38,7 @@ fi
 echo "✓ Check 2/$TOTAL_CHECKS: Verify core configuration files"
 if [ -f "openspec/config.yaml" ] && [ -f "openspec/schemas/workflow/schema.yaml" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "Missing core configuration files (config.yaml or schema.yaml)"
@@ -56,7 +56,7 @@ for template in "${TEMPLATES[@]}"; do
 done
 if [ "$TEMPLATE_CHECK" = true ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
 fi
@@ -67,7 +67,7 @@ if [ -f "openspec/context/project_summary.template.md" ] && \
    [ -f "openspec/context/tech_stack.template.md" ] && \
    [ -f "openspec/context/infrastructure.template.md" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "Missing context template files (project_summary, tech_stack, or infrastructure)"
@@ -77,7 +77,7 @@ fi
 echo "✓ Check 5/$TOTAL_CHECKS: Verify 13-step workflow description"
 if grep -q "13-Step Contract-First" openspec/schemas/workflow/schema.yaml 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "13-step workflow description missing in schema.yaml"
@@ -95,7 +95,7 @@ for artifact in "${ARTIFACTS[@]}"; do
 done
 if [ "$ARTIFACT_CHECK" = true ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
 fi
@@ -104,7 +104,7 @@ fi
 echo "✓ Check 7/$TOTAL_CHECKS: Verify infrastructure artifact"
 if grep -q "id: infrastructure" openspec/schemas/workflow/schema.yaml 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "Infrastructure artifact missing"
@@ -114,7 +114,7 @@ fi
 echo "✓ Check 8/$TOTAL_CHECKS: Verify config schema field"
 if grep -q "^schema: workflow" openspec/config.yaml 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "config.yaml must have 'schema: workflow'"
@@ -124,7 +124,7 @@ fi
 echo "✓ Check 9/$TOTAL_CHECKS: Verify config context"
 if grep -q "^context:" openspec/config.yaml 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "config.yaml missing context section"
@@ -134,7 +134,7 @@ fi
 echo "✓ Check 10/$TOTAL_CHECKS: Verify config rules"
 if grep -q "^rules:" openspec/config.yaml 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "config.yaml missing rules section"
@@ -146,7 +146,7 @@ if grep -q "Phase 0" openspec/schemas/workflow/templates/tasks.md 2>/dev/null &&
    grep -q "Phase 8" openspec/schemas/workflow/templates/tasks.md 2>/dev/null && \
    grep -q "Step 13" openspec/schemas/workflow/templates/tasks.md 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "tasks.md missing 13-step structure (Phase 0-8, Step 13)"
@@ -156,7 +156,7 @@ fi
 echo "✓ Check 12/$TOTAL_CHECKS: Verify StandardResp format"
 if grep -q "StandardResp" openspec/schemas/workflow/templates/infrastructure.md 2>/dev/null; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "StandardResp format missing in infrastructure.md"
@@ -166,7 +166,7 @@ fi
 echo "✓ Check 13/$TOTAL_CHECKS: Verify README"
 if [ -f "README.md" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "README.md missing"
@@ -176,7 +176,7 @@ fi
 echo "✓ Check 14/$TOTAL_CHECKS: Verify init script"
 if [ -f "init.sh" ] && [ -x "init.sh" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "init.sh missing or not executable"
@@ -186,7 +186,7 @@ fi
 echo "✓ Check 15/$TOTAL_CHECKS: Verify skills directory"
 if [ -d "skills" ] && [ "$(ls -A skills 2>/dev/null)" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "skills directory missing or empty"
@@ -196,7 +196,7 @@ fi
 echo "✓ Check 16/$TOTAL_CHECKS: Verify init-project script"
 if [ -f "scripts/init-project.sh" ] && [ -x "scripts/init-project.sh" ]; then
     echo "  ✓ PASS"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "scripts/init-project.sh missing or not executable"
@@ -206,7 +206,7 @@ fi
 echo "✓ Check 17/$TOTAL_CHECKS: Verify E2E/contract testing in workflow"
 if grep -qE "Contract Testing|end-to-end|E2E" openspec/schemas/workflow/templates/tasks.md 2>/dev/null; then
     echo "  ✓ PASS (E2E/contract testing tasks present)"
-    ((PASS_COUNT++))
+    PASS_COUNT=$((PASS_COUNT + 1))
 else
     echo "  ✗ FAIL"
     add_error "tasks.md missing E2E/contract testing references"

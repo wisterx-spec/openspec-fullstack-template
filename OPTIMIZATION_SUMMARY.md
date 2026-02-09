@@ -232,3 +232,65 @@ This optimization successfully achieved the following goals:
 - Documentation completeness: 100%
 - Backward compatibility: Fully maintained
 - Automation tools: Complete
+
+---
+
+## Frontend-First Workflow Integration (This Release)
+
+### ✅ 7. Frontend-First Solo Development Workflow
+
+Added a complete 7-step UI-driven workflow as an alternative to the existing 13-step Spec-First approach.
+
+**New Files Created**:
+
+| File | Purpose |
+|------|---------|
+| `FRONTEND_FIRST_WORKFLOW.md` | Complete 7-step workflow guide (English) |
+| `FRONTEND_FIRST_WORKFLOW_CN.md` | Complete 7-step workflow guide (Chinese) |
+| `openspec/conventions/api-convention.md` | Single source of truth for API format, error codes, pagination |
+| `skills/openspec-ff-new/SKILL.md` | Create new Frontend-First feature (Step 1+2) |
+| `skills/openspec-ff-freeze/SKILL.md` | Freeze UI and mock data (Step 3) |
+| `skills/openspec-ff-mock-to-spec/SKILL.md` | Derive API Spec from mock data (Step 4) |
+| `skills/openspec-ff-done/SKILL.md` | Integration and archive (Step 7) |
+| `scripts/ff-compare-mock-spec.js` | Mock vs Spec field-level comparison |
+| `scripts/ff-contract-test-runner.js` | Contract test runner against live API |
+| `scripts/ff-freeze-mock-version.js` | Mock data version snapshot |
+| `scripts/ff-check-no-mock-in-build.sh` | Production build mock leak checker |
+| `.cursor/agents/ff-verifier.md` | Three-way consistency check subagent |
+| `.cursor/agents/ff-contract-tester.md` | Contract test analysis subagent |
+| `.cursor/agents/ff-spec-checker.md` | Mock ↔ Spec comparison subagent |
+| `.cursor/agents/ff-build-checker.md` | Build mock leak check subagent |
+| `.cursor/agents/ff-migrator.md` | Existing project mock migration scanner |
+
+**Modified Files**:
+
+| File | Changes |
+|------|---------|
+| `README.md` | Added Frontend-First mode section, commands, directory structure |
+| `README_CN.md` | Added Frontend-First mode section (Chinese) |
+| `openspec/config.yaml` | Added `frontend-first-solo` dev_mode + `frontend_first_solo` config block |
+| `init.sh` | Added `frontend-first-solo` mode, auto-creates devtools/mocks + copies ff-* files |
+| `scripts/init-project.sh` | Added Frontend-First workflow enable prompt |
+| `validate.sh` | Fixed pre-existing bash bug (`((0++))` with `set -e`) |
+| Template files | Unified to 6-digit error codes, flat pagination, `details` field |
+
+### ✅ 8. API Convention Unification
+
+- Created `openspec/conventions/api-convention.md` as the canonical source for:
+  - Response envelope: `{ code, message, data }`
+  - 6-digit error codes (CCMMSS format)
+  - Flat pagination: `{ items, total, page, page_size }`
+  - Field naming: `snake_case` for JSON, `kebab-case` for URLs
+  - ISO 8601 date format
+- Updated all template files to conform to the convention
+
+### Impact
+
+- **For solo fullstack developers**: Complete UI-first workflow with mock isolation, contract testing
+- **For existing 13-step users**: No breaking changes; Frontend-First is opt-in via `dev_mode`
+- **For new projects**: `init.sh` and `init-project.sh` auto-configure Frontend-First infrastructure
+
+---
+
+**Release Date**: 2026-02-04
+**Validation Status**: ✅ All passed (17/17 checks)
