@@ -47,12 +47,9 @@
         "created_at": "2024-01-28T10:30:00Z"
       }
     ],
-    "pagination": {
-      "page": 1,
-      "page_size": 20,
-      "total_count": 100,
-      "total_pages": 5
-    }
+    "total": 100,
+    "page": 1,
+    "page_size": 20
   }
 }
 ```
@@ -60,10 +57,10 @@
 **Response** (Error - 400):
 ```json
 {
-  "code": 1000,
-  "message": "Invalid Parameter",
+  "code": 100001,
+  "message": "Missing Required Parameter",
   "data": null,
-  "error_details": {
+  "details": {
     "field": "page",
     "reason": "Must be a positive integer",
     "trace_id": "550e8400-e29b-41d4-a716-446655440000"
@@ -110,10 +107,10 @@
 **Response** (Error - 400):
 ```json
 {
-  "code": 1001,
-  "message": "Validation Failed",
+  "code": 100002,
+  "message": "Invalid Parameter Format",
   "data": null,
-  "error_details": {
+  "details": {
     "field": "name",
     "reason": "Name is required",
     "trace_id": "550e8400-e29b-41d4-a716-446655440000"
@@ -150,10 +147,10 @@
 **Response** (Error - 404):
 ```json
 {
-  "code": 2000,
+  "code": 300001,
   "message": "Resource Not Found",
   "data": null,
-  "error_details": {
+  "details": {
     "resource": "<!-- resource -->",
     "id": 123,
     "trace_id": "550e8400-e29b-41d4-a716-446655440000"
@@ -169,11 +166,13 @@ Reference: `infrastructure.md` for complete error code system.
 
 | Code | Message | HTTP Status | When to Use |
 |------|---------|-------------|-------------|
-| 1000 | Invalid Parameter | 400 | Missing or malformed request parameter |
-| 1001 | Validation Failed | 400 | Data validation error |
-| 2000 | Resource Not Found | 404 | Requested resource doesn't exist |
-| 4000 | Database Error | 500 | Database operation failure |
-| 5000 | Internal Server Error | 500 | Unexpected system error |
+| 100001 | Missing Required Parameter | 400 | Missing or malformed request parameter |
+| 100002 | Invalid Parameter Format | 400 | Data validation error |
+| 300001 | Resource Not Found | 404 | Requested resource doesn't exist |
+| 500001 | Database Error | 500 | Database operation failure |
+| 500003 | Internal Server Error | 500 | Unexpected system error |
+
+> Error codes are 6-digit `CCMMSS` format. See `openspec/conventions/api-convention.md` for full table.
 
 ---
 
@@ -219,4 +218,4 @@ Reference: `infrastructure.md` for complete error code system.
 - [ ] Logging requirements are specified for critical operations
 - [ ] Request headers include X-Request-ID for tracing
 - [ ] Pagination endpoints return total_count
-- [ ] Error responses include error_details with trace_id
+- [ ] Error responses include details with trace_id

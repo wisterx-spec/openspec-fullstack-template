@@ -115,7 +115,7 @@
   - Constraint: Log all errors with full context (stack trace, request params)
   - Constraint: Use error codes from `infrastructure.md`
   - Constraint: Return StandardResp format for all responses
-  - Constraint: Include error_details with trace_id in error responses
+  - Constraint: Include details with trace_id in error responses
   - Action: Implement request validation using middleware
   - Action: Add authentication checks where required
 

@@ -89,6 +89,48 @@ if [ ! -f "$CONTEXT_DIR/infrastructure.md" ] && [ -f "$TEMPLATE_DIR/infrastructu
     fi
 fi
 
+# 询问是否启用 Frontend-First 工作流
+echo ""
+read -p "是否启用 Frontend-First 工作流？（适合有前端的项目）(y/N): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    ENABLE_FF=true
+    echo -e "${GREEN}🚀 正在设置 Frontend-First 基础设施...${NC}"
+
+    # 创建 devtools/mocks 目录
+    mkdir -p "devtools/mocks/data"
+    touch "devtools/mocks/data/.gitkeep"
+
+    # 创建 design-system 目录
+    mkdir -p "design-system"
+
+    # 复制 API convention（如果不存在）
+    if [ ! -f "openspec/conventions/api-convention.md" ]; then
+        SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+        TEMPLATE_ROOT="$(dirname "$SCRIPT_DIR")"
+        if [ -f "$TEMPLATE_ROOT/openspec/conventions/api-convention.md" ]; then
+            mkdir -p "openspec/conventions"
+            cp "$TEMPLATE_ROOT/openspec/conventions/api-convention.md" "openspec/conventions/"
+            echo -e "${GREEN}  ✅ api-convention.md 已复制${NC}"
+        fi
+    fi
+
+    # 更新 config.yaml 的 dev_mode
+    if [ -f "openspec/config.yaml" ]; then
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' "s/dev_mode: fullstack/dev_mode: frontend-first-solo/g" openspec/config.yaml
+        else
+            sed -i "s/dev_mode: fullstack/dev_mode: frontend-first-solo/g" openspec/config.yaml
+        fi
+        echo -e "${GREEN}  ✅ config.yaml 已更新为 frontend-first-solo 模式${NC}"
+    fi
+
+    echo -e "${GREEN}  ✅ devtools/mocks/ 目录已创建${NC}"
+    echo -e "${GREEN}  ✅ design-system/ 目录已创建${NC}"
+else
+    ENABLE_FF=false
+fi
+
 # 更新 config.yaml（如果存在）
 if [ -f "openspec/config.yaml" ]; then
     echo -e "${GREEN}⚙️  正在更新 config.yaml...${NC}"
@@ -109,9 +151,19 @@ echo "1. 编辑 openspec/context/project_summary.md 补充详细信息"
 echo "2. 编辑 openspec/context/tech_stack.md 填写技术栈详情"
 if [ ! -f "$CONTEXT_DIR/infrastructure.md" ]; then
     echo "3. 在 Cursor 中运行: /opsx:new infrastructure (可选，生成基础设施规范)"
-    echo "4. 开始开发: /opsx:new <功能名>"
 else
     echo "3. 编辑 openspec/context/infrastructure.md 完善基础设施规范（如需要）"
+fi
+if [ "$ENABLE_FF" = true ]; then
+    echo ""
+    echo -e "${BLUE}🚀 Frontend-First 模式已启用：${NC}"
+    echo "   /opsx:ff-new <功能名>           创建新功能（Step 1+2）"
+    echo "   /opsx:ff-freeze <功能名>        冻结 UI（Step 3）"
+    echo "   /opsx:ff-mock-to-spec <功能名>  从 Mock 反推 Spec（Step 4）"
+    echo "   /opsx:ff-done <功能名>          集成与归档（Step 7）"
+    echo ""
+    echo "   详见: FRONTEND_FIRST_WORKFLOW_CN.md"
+else
     echo "4. 开始开发: /opsx:new <功能名>"
 fi
 echo ""

@@ -10,18 +10,24 @@ schema: workflow
 
 # Project context (injected into all artifact instructions - constraints for AI)
 context: |
-  This project follows the 13-Step Contract-First Development Workflow.
+  This project supports two workflow modes:
+  - 13-Step Spec-First (contract-driven): Write Spec first, then implement.
+  - 7-Step Frontend-First (UI-driven): Build UI with mock data, derive Spec from usage.
+  
+  Active mode is determined by dev_mode below. When dev_mode is frontend-first-solo,
+  follow the 7-Step Frontend-First Workflow (see FRONTEND_FIRST_WORKFLOW.md).
+  Otherwise, follow the 13-Step Contract-First Workflow (see 13_STEP_WORKFLOW.md).
   
   Tech Stack: See context/tech_stack.md
   Infrastructure: See context/infrastructure.md (if exists)
-  
-  Development Mode: fullstack (can be overridden per-change)
+  API Convention: See conventions/api-convention.md (response format, error codes, pagination)
   
   Key Constraints:
   - All API responses MUST follow StandardResp format: {code, message, data}
+  - Error codes MUST be 6-digit CCMMSS format (see api-convention.md)
+  - Pagination MUST use flat structure: {items, total, page, page_size}
   - All requests MUST include X-Request-ID header for tracing
   - All logging MUST be structured with trace_id
-  - Error codes MUST follow infrastructure.md standards
 
 # Per-artifact rules (constraints for AI when creating artifacts)
 rules:
@@ -39,10 +45,31 @@ rules:
     - "MUST define mocking strategy using JSON from spec.md"
     - "MUST reference infrastructure.md for patterns"
   tasks:
-    - "MUST follow 13-Step Contract-First Workflow structure"
+    - "When dev_mode is frontend-first-solo, follow 7-Step Frontend-First Workflow; otherwise follow 13-Step Contract-First Workflow"
     - "MUST include specific file paths, class names, function names"
     - "MUST adapt based on development mode (skip frontend tasks for backend-only, etc.)"
 
 # Development mode (affects design and tasks generation)
-# Options: fullstack, frontend-only, backend-only, middleware-only
+# Options: fullstack, frontend-only, backend-only, middleware-only, frontend-first-solo
 dev_mode: fullstack
+
+# Frontend-First Solo mode configuration (only used when dev_mode: frontend-first-solo)
+# See FRONTEND_FIRST_WORKFLOW.md for the complete 7-step workflow guide.
+frontend_first_solo:
+  # Enforce UI freeze checkpoint before proceeding to Spec
+  enforce_ui_freeze: true
+
+  # Require contract tests in backend implementation step
+  contract_testing: true
+
+  # Auto-compare mock data vs spec during Spec Review
+  auto_compare_mock_spec: true
+
+  # Mock data directory (must be under devtools/, never under src/)
+  mock_data_path: "devtools/mocks/data"
+
+  # Spec output directory
+  spec_path: "openspec/specs"
+
+  # API convention file (single source of truth for response format, error codes, etc.)
+  api_convention: "openspec/conventions/api-convention.md"

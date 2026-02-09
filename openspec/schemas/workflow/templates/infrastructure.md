@@ -53,36 +53,39 @@ Example: 1001, 2003, 4005
 
 | Range | Category | Description |
 |-------|----------|-------------|
-| 1xxx | Client Errors | Invalid input, validation failures |
-| 2xxx | Business Logic Errors | Business rule violations |
-| 3xxx | External Service Errors | Third-party API failures |
-| 4xxx | System Errors | Database, network, infrastructure |
-| 5xxx | Unknown Errors | Unexpected exceptions |
+| 10xxxx | Parameter/Validation Errors | Invalid input, validation failures |
+| 20xxxx | Auth/Permission Errors | Authentication, authorization failures |
+| 30xxxx | Business Logic Errors | Business rule violations |
+| 40xxxx | External Service Errors | Third-party API failures |
+| 50xxxx | System/Infrastructure Errors | Database, network, unexpected exceptions |
+
+> Error codes are 6-digit numbers in `CCMMSS` format (Category 2-digit + Module 2-digit + Sequence 2-digit).
+> For the full error code table and allocation rules, see `openspec/conventions/api-convention.md`.
 
 ### 2.2 Standard Error Codes
 | Code | Message | Description |
 |------|---------|-------------|
-| 1000 | Invalid Parameter | Missing or malformed request parameter |
-| 1001 | Validation Failed | Data validation error |
-| 1002 | Unauthorized | Authentication required |
-| 1003 | Forbidden | Insufficient permissions |
-| 2000 | Resource Not Found | Requested resource doesn't exist |
-| 2001 | Resource Already Exists | Duplicate resource creation |
-| 2002 | Business Rule Violation | Operation violates business logic |
-| 3000 | External Service Unavailable | Third-party service timeout/error |
-| 4000 | Database Error | Database connection/query failure |
-| 4001 | Network Error | Network connectivity issue |
-| 5000 | Internal Server Error | Unexpected system error |
+| 100001 | Missing Required Parameter | Missing or malformed request parameter |
+| 100002 | Invalid Parameter Format | Data type mismatch or format error |
+| 100003 | Parameter Out of Range | Value exceeds allowed range |
+| 200001 | Unauthorized | Authentication required |
+| 200003 | Forbidden | Insufficient permissions |
+| 300001 | Resource Not Found | Requested resource doesn't exist |
+| 300002 | Resource Already Exists | Duplicate resource creation |
+| 300003 | Operation Not Allowed | Business rule violation |
+| 400001 | External Service Unavailable | Third-party service timeout/error |
+| 500001 | Database Error | Database connection/query failure |
+| 500003 | Internal Server Error | Unexpected system error |
 
 ### 2.3 Error Response Format
 ```json
 {
-  "code": 1000,
-  "message": "Invalid Parameter",
+  "code": 100001,
+  "message": "Missing Required Parameter",
   "data": null,
-  "error_details": {
+  "details": {
     "field": "email",
-    "reason": "Invalid email format",
+    "reason": "This field is required",
     "trace_id": "uuid-v4"
   }
 }
@@ -124,25 +127,24 @@ interface StandardResp<T> {
 ### 3.3 Error Response Example
 ```json
 {
-  "code": 1000,
-  "message": "Invalid Parameter",
+  "code": 100001,
+  "message": "Missing Required Parameter",
   "data": null
 }
 ```
 
 ### 3.4 Pagination Response
+> Uses flat structure — no nested `pagination` object. Frontend calculates `total_pages = Math.ceil(total / page_size)`.
+
 ```json
 {
   "code": 0,
   "message": "success",
   "data": {
     "items": [],
-    "pagination": {
-      "page": 1,
-      "page_size": 20,
-      "total_count": 100,
-      "total_pages": 5
-    }
+    "total": 100,
+    "page": 1,
+    "page_size": 20
   }
 }
 ```

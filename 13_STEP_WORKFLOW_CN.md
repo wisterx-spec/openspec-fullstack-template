@@ -2,12 +2,30 @@
 
 本文档详细说明 OpenSpec Fullstack Template 的 13 步契约优先开发工作流。
 
+## 🎯 两种工作流模式
+
+### 模式 1: 传统契约优先模式（Contract-First）
+**流程**: Proposal → Spec → Design → 实现
+**适用**: 需求明确、接口复杂、需要严格契约约束
+
+### 模式 2: UI/UX 驱动模式（UI-Driven）⭐ 推荐用于快速迭代
+**流程**: Proposal → UI 原型 → 用户验收 → 生成 Spec → Design → 实现
+**适用**: 快速迭代、频繁调整、UI/UX 优先、需要早期看到效果
+
+**核心优势**:
+- ✅ 用户早期看到并体验 UI/UX
+- ✅ 频繁调整成本低（只需改前端原型）
+- ✅ 确认 UI 后再生成契约，减少后期大改
+- ✅ 前端原型代码可复用，后续只需接入 API
+
 ## 📋 工作流概览
 
 | Phase | Steps | 阶段名称 | 产出物 | 状态 |
 |-------|-------|---------|--------|------|
 | **Phase 0** | Step 1 | 初始化 | 技术栈分析、基础设施规范 | 可选 |
 | **Phase 1** | Steps 2-4 | 定义阶段 | proposal.md, spec.md | 必需 |
+| **Phase 1.5** | Steps 2.5-2.6 | UI 原型阶段（UI-Driven） | ui-prototype.md, ui-acceptance.md | UI-Driven 模式 |
+| **Phase 1.7** | Step 3 | 从 UI 生成 Spec（UI-Driven） | spec.md（从 UI 生成） | UI-Driven 模式 |
 | **Phase 2** | Step 5 | 设计分离 | design.md | 必需 |
 | **Phase 3** | Steps 6-7 | 前端 Mock 开发 | Mock 数据 + 前端代码 | 按模式 |
 | **Phase 4** | Step 8 | 后端骨架 | 后端 API 骨架（返回 Mock） | 按模式 |
@@ -101,9 +119,167 @@
 
 ---
 
-### Step 4: 规格说明（Spec）
+### Step 2.5: UI/UX 原型（UI-Driven 模式）⭐ 新增
+
+**目标**：快速搭建前端 UI/UX 原型，让用户早期看到并体验界面
+
+**适用模式**：`ui-driven`（在 `config.yaml` 中设置 `dev_mode: ui-driven`）
+
+**任务**：
+
+- **Task 1.5**: 构建 UI/UX 原型
+
+**技术栈**：
+- **推荐**：React/Vue + Tailwind CSS + 组件库（shadcn/ui、Ant Design 等）
+- **原因**：组件化开发，调整效率高；代码可复用，后续只需接入 API
+
+**必需内容**：
+
+1. **页面/组件列表**
+   - 列出所有需要构建的页面和组件
+   - 描述每个页面的用途
+
+2. **UI/UX 设计细节**（每个页面）：
+   - **布局结构**：Header、Sidebar、Main Content 等
+   - **使用的组件**：Button、Form、Table、Card 等
+   - **用户交互**：点击、悬停、表单提交等
+   - **状态展示**：Loading、Empty、Error、Success
+   - **视觉设计**：颜色、字体、间距、效果
+
+3. **Mock 数据结构**（仅用于 UI 展示）：
+   ```typescript
+   // 这是 UI 期望的数据结构，还不是 API 契约
+   interface User {
+     id: number;
+     name: string;
+     email: string;
+     // ... UI 需要的字段
+   }
+   ```
+
+4. **用户流程**：
+   - 描述用户在页面间的导航流程
+   - 展示页面流转图
+
+**关键约束**：
+- ⚠️ **只做 UI/UX，不涉及 API 接口定义**
+- ⚠️ **Mock 数据仅用于展示，不是最终 API 契约**
+- ✅ 使用前端框架搭建静态页面（无真实 API 调用）
+- ✅ 代码应该可复用，后续只需替换 Mock 数据为 API 调用
+
+**产出物**：
+- `ui-prototype.md` - UI/UX 原型文档
+- 实际的前端原型代码（可运行的静态页面）
+
+**优势**：
+- ✅ 用户早期看到并体验界面
+- ✅ 使用组件库快速调整样式（改 Tailwind 类名或组件 props）
+- ✅ 组件化开发，改一处影响多处
+- ✅ 热重载，实时查看效果
+
+---
+
+### Step 2.6: UI/UX 用户验收（UI-Driven 模式）⭐ 新增
+
+**目标**：用户验收 UI/UX 原型，确认界面满足需求
+
+**适用模式**：`ui-driven`
+
+**任务**：
+
+- **Task 1.6**: 用户验收 UI/UX
+
+**流程**：
+
+1. **用户查看原型**
+   - 用户访问运行中的原型（本地开发服务器）
+   - 体验所有页面和交互
+
+2. **收集反馈**
+   - 记录哪些元素已通过
+   - 记录哪些元素需要修改
+   - 记录修改的具体要求
+
+3. **迭代调整**
+   - 如需修改，回到 Step 2.5 更新原型
+   - 快速调整（改组件样式、布局、交互）
+   - 重新验收
+
+4. **确认通过**
+   - 用户确认 UI/UX 满足需求
+   - 标记为"已验收"
+
+**产出物**：
+- `ui-acceptance.md` - UI/UX 验收文档
+
+**验收内容**：
+- ✅ 页面布局和视觉设计
+- ✅ 用户交互流程
+- ✅ 各种状态展示（Loading、Empty、Error）
+- ✅ Mock 数据结构是否满足 UI 需求
+
+---
+
+### Step 3: 从 UI 生成规格说明（UI-Driven 模式）⭐ 新增
+
+**目标**：基于验收的 UI 原型，生成 API 规格说明
+
+**适用模式**：`ui-driven`
+
+**任务**：
+
+- **Task 1.3**: 从 UI 生成 Spec
+
+**输入**：
+- `ui-prototype.md` - 验收的 UI 原型
+- `ui-acceptance.md` - 用户验收确认
+- `proposal.md` - 原始需求
+
+**流程**：
+
+1. **分析 UI 数据需求**
+   - 从前端代码提取 Mock 数据结构
+   - 识别所有 API 调用点（列表、详情、创建、更新、删除等）
+   - 提取表单字段和验证需求
+
+2. **设计 API 端点**
+   - 基于 UI 的数据需求设计 API
+   - 考虑后端约束：
+     - 数据库范式（避免过度嵌套）
+     - 查询性能（合理设计索引）
+     - 分页、排序、过滤需求
+
+3. **定义数据结构**
+   - 确保 API 支持 UI 的所有数据需求
+   - 补充 UI 未体现的字段（如 created_at、updated_at）
+   - 优化数据结构（考虑性能和维护性）
+
+4. **补充边界情况**
+   - 错误处理和错误码
+   - 数据验证规则
+   - 权限控制要求
+   - 日志要求
+
+5. **定义数据库 Schema**
+   - 表结构设计
+   - 索引和约束
+   - 种子数据示例
+
+**产出物**：
+- `spec.md` - API 规格说明（从 UI 生成）
+
+**关键原则**：
+- ✅ API 必须支持 UI 的所有数据需求
+- ✅ 数据结构需后端友好（性能、可维护性）
+- ✅ 补充 UI 未体现的边界情况和错误处理
+
+---
+
+### Step 4: 规格说明（Spec）（传统模式）
 
 **目标**：创建 API 规格说明，作为**唯一真相源（Source of Truth）**
+
+**适用模式**：传统契约优先模式（`dev_mode: fullstack` 或其他非 `ui-driven` 模式）
 
 **任务**：
 
@@ -174,8 +350,36 @@
 
 **任务**：
 
+- **Task 2.0**: 生成设计系统（ui-ux-pro-max 集成）⭐ 新增
 - **Task 2.1**: 前端组件设计
 - **Task 2.2**: 后端控制器接口设计
+
+#### Task 2.0: 设计系统生成（自动）
+
+在创建 `design.md` 之前，自动生成设计系统：
+
+1. **从 proposal.md 提取项目类型**
+   - 分析 Background、Goals、User Stories 中的关键词
+   - 识别行业：SaaS、电商、医疗、金融、美容、教育等
+
+2. **运行 ui-ux-pro-max 设计系统生成器**
+   ```bash
+   python3 openspec/ui-ux-pro-max/scripts/search.py "<关键词>" --design-system --persist -p "<项目名>"
+   ```
+
+3. **输出设计系统到 `design-system/MASTER.md`**
+   - UI 样式推荐（如 Soft UI Evolution、Glassmorphism）
+   - 配色方案（Primary、Secondary、CTA、Background、Text）
+   - 字体配对（标题字体 / 正文字体）
+   - 关键效果（阴影、过渡、悬停状态）
+   - 反模式警告（应避免的设计元素）
+
+4. **在 design.md 中引用设计系统**
+   - 填写 "Design System Reference" 章节
+   - 确保前端开发遵循设计系统规范
+
+**产出物**：
+- `design-system/MASTER.md` - 完整设计系统文档
 
 **首先确定开发模式**：
 - **fullstack**: 完整前端 + 后端 + 中间件（默认）
@@ -224,8 +428,14 @@
    - 错误处理方法
    - 请求/响应格式合规性
 
+8. **设计系统引用**（新增）：
+   - 引用 `design-system/MASTER.md`
+   - UI 样式、配色、字体快速参考
+   - 反模式清单
+
 **产出物**：
-- `design.md` - 设计文档
+- `design-system/MASTER.md` - 设计系统文档（ui-ux-pro-max 生成）
+- `design.md` - 设计文档（引用设计系统）
 
 ---
 
@@ -509,8 +719,10 @@
 
 - `proposal.md` - 提案文档
 - `spec.md` - API 规格说明（唯一真相源）
-- `design.md` - 设计文档
+- `design-system/MASTER.md` - 设计系统（ui-ux-pro-max 生成）
+- `design.md` - 设计文档（引用设计系统）
 - `tasks.md` - 任务跟踪文档
 - `infrastructure.md` - 基础设施规范
 - `context/project_summary.md` - 项目上下文
 - `context/tech_stack.md` - 技术栈信息
+- `openspec/ui-ux-pro-max/` - 设计系统生成器
